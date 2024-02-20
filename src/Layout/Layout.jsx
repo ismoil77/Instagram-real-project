@@ -49,53 +49,6 @@ export const Layout = () => {
   const [img2 , setImg2] = useState('')
 
   const myId = getToken().sid;
-  window.addEventListener('contextmenu' , (e)=>
-  {
-    e.preventDefault()
-    setModal(false)
-    setAddModal(false)
-  })
-
-  const reader = (e) => {
-    const file = e.target.files[0];
-    setImg2(file)
-    if (file)
-    {
-      const reader = new FileReader();
-
-      reader.onload = (e) =>
-      {
-        const base64 = e.target.result;
-        setImg(base64);
-      };
-
-      reader.readAsDataURL(file);
-      setAddModal(false)
-      setModal(true)
-    }
-  }
-
-    async function post()
-    {
-      let form = new FormData()
-      form.append("Title" ,"Img")
-      form.append("Content" , "Img")
-      form.append("Images" , img2)
-     
-      try
-      {
-          let {data} = await axiosRequest.post(`Post/add-post` , form , 
-          {
-            "Content-Type":"Multipart/form-data"
-          })
-          console.log(data.data);
-          setModal(false)
-      }
-      catch(error)
-      {
-          console.log(error);
-      }
-    }
 
   useEffect(() => {
     AOS.init();
