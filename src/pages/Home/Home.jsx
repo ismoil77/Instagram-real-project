@@ -1,6 +1,29 @@
 import React from 'react'
 import iconButtonLeft from '../../assets/imgHome/ıcon.svg'
 const Home = () => {
+
+  const [data , setData] = useState([])
+
+
+
+  async function getData()
+  {
+    try
+    {
+      let {data} = await axiosRequest.get("Post/get-posts")
+      console.log(data.data);
+      setData(data.data)
+    }
+    catch(error)
+    {
+      console.log(error);
+    }
+  }
+
+  useEffect(()=>
+  {
+    getData()
+  } , [])
   return (
     <>
     <div className="">
