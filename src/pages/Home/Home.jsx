@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { axiosRequest } from '../../utils/axiosRequest'
+import React from 'react'
+import iconButtonLeft from '../../assets/imgHome/ıcon.svg'
 const Home = () => {
 
   const [data , setData] = useState([])
@@ -25,16 +25,41 @@ const Home = () => {
     getData()
   } , [])
   return (
-    <div>
-      {
-        data.map(el =>
-          (
-            <div key={el.postId}>
-                <img src={`http://65.108.148.136:8085/images/${el.images[0]}`} className='w-[100px] h-[100px] bg-[white]'  alt="picture" />
-            </div>
-          ))
-      }
+    <>
+    <div className="">
+      <div className="">
+
+        <div className="flex ">
+          <button><img alt="" className='rotate-180' src={iconButtonLeft}/></button>
+          <div className="w-[70px] h-[70px] rounded-[50%]  flex justify-center items-center bg-gradient-to-r from-[#DE0046] to-[#F7A34B]">
+            <img className='w-[65px]  h-[65px] rounded-[50%] border-[3px] object-cover' src="https://ultimatedubaiguide.com/wp-content/uploads/2023/08/Brand-Cover-of-IMG-World-of-Adventure.jpg.webp" alt="" />
+          </div>
+          <div className="w-[70px] h-[70px] rounded-[50%]  flex justify-center items-center bg-gradient-to-r from-[#DE0046] to-[#F7A34B]">
+            <img className='w-[65px]  h-[65px] rounded-[50%] border-[3px] object-cover' src="https://ultimatedubaiguide.com/wp-content/uploads/2023/08/Brand-Cover-of-IMG-World-of-Adventure.jpg.webp" alt="" />
+          </div>
+          <div className="w-[70px] h-[70px] rounded-[50%]  flex justify-center items-center bg-gradient-to-r from-[#DE0046] to-[#F7A34B]">
+            <img className='w-[65px]  h-[65px] rounded-[50%] border-[3px] object-cover' src="https://ultimatedubaiguide.com/wp-content/uploads/2023/08/Brand-Cover-of-IMG-World-of-Adventure.jpg.webp" alt="" />
+          </div>
+          <div className="w-[70px] h-[70px] rounded-[50%]  flex justify-center items-center bg-gradient-to-r from-[#DE0046] to-[#F7A34B]">
+            <img className='w-[65px]  h-[65px] rounded-[50%] border-[3px] object-cover' src="https://ultimatedubaiguide.com/wp-content/uploads/2023/08/Brand-Cover-of-IMG-World-of-Adventure.jpg.webp" alt="" />
+          </div>
+          <div className="w-[70px] h-[70px] rounded-[50%]  flex justify-center items-center bg-gradient-to-r from-[#DE0046] to-[#F7A34B]">
+            <img className='w-[65px]  h-[65px] rounded-[50%] border-[3px] object-cover' src="https://ultimatedubaiguide.com/wp-content/uploads/2023/08/Brand-Cover-of-IMG-World-of-Adventure.jpg.webp" alt="" />
+          </div>
+          <div className="w-[70px] h-[70px] rounded-[50%]  flex justify-center items-center bg-gradient-to-r from-[#DE0046] to-[#F7A34B]">
+            <img className='w-[65px]  h-[65px] rounded-[50%] border-[3px] object-cover' src="https://ultimatedubaiguide.com/wp-content/uploads/2023/08/Brand-Cover-of-IMG-World-of-Adventure.jpg.webp" alt="" />
+          </div>
+          <div className="w-[70px] h-[70px] rounded-[50%]  flex justify-center items-center bg-gradient-to-r from-[#DE0046] to-[#F7A34B]">
+            <img className='w-[65px]  h-[65px] rounded-[50%] border-[3px] object-cover' src="https://ultimatedubaiguide.com/wp-content/uploads/2023/08/Brand-Cover-of-IMG-World-of-Adventure.jpg.webp" alt="" />
+          </div>
+          <div className="w-[70px] h-[70px] rounded-[50%]  flex justify-center items-center bg-gradient-to-r from-[#DE0046] to-[#F7A34B]">
+            <img className='w-[65px]  h-[65px] rounded-[50%] border-[3px] object-cover' src="https://ultimatedubaiguide.com/wp-content/uploads/2023/08/Brand-Cover-of-IMG-World-of-Adventure.jpg.webp" alt="" />
+          </div>
+        </div>
+
+      </div>
     </div>
+    </>
   )
 }
 
