@@ -6,7 +6,7 @@ import user from "../../../assets/images/polzovatel.jpg";
 import CloseIcon from "@mui/icons-material/Close";
 
 const MySearch = () => {
-  const data = useSelector((state) => state.search.data);
+  const data = useSelector((state) => state.searchUsers.data);
   console.log(data);
   const dispatch = useDispatch();
 

@@ -45,10 +45,7 @@ export const Layout = () => {
   const dispatch = useDispatch();
   let [followingState, setFollowingState] = useState(false);
 
-  const [addModal, setAddModal] = useState(false);
-  const [modal, setModal] = useState(false);
-  const [img, setImg] = useState("");
-  const [img2, setImg2] = useState("");
+  
   const [searchMod, setSearchMod] = useState(false);
 
 
@@ -498,39 +495,34 @@ export const Layout = () => {
           </div>
         </footer> */}
       </aside>
-      {addModal ? (
-        <div className="z-20 fixed w-[100%] h-[100%] top-0 right-0 bg-[#0000008F]"></div>
-      ) : null}
-      {modal ? (
-        <div className="z-20 fixed w-[100%] h-[100%] top-0 right-0 bg-[#0000008F]"></div>
-      ) : null}
-      {addModal ? (
-        <div className="bg-[white] fixed top-[15%] w-[35%] h-[70svh] right-[30%] rounded-md z-50">
-          <div className="flex items-center p-[20px] justify-between">
-            <p className="text-[30px]">Create new post</p>
-            <p
-              className="text-[30px] font-[600] cursor-pointer"
-              onClick={() => setAddModal(false)}
-            >
-              X
-            </p>
+      {
+        addModal ?
+        (
+          <div className="z-20 fixed w-[100%] h-[100%] top-0 right-0 bg-[#0000008F]"></div>
+        ) : null
+      }
+      {
+        modal ?
+        (
+          <div className="z-20 fixed w-[100%] h-[100%] top-0 right-0 bg-[#0000008F]"></div>
+        ) : null
+      }
+      {
+        addModal ?
+        (
+          <div className="bg-[white] fixed top-[15%] w-[35%] h-[70svh] right-[30%] rounded-md z-50">
+            <div className="flex items-center p-[20px] justify-between">
+              <p className="text-[30px]">Create new post</p>
+              <p className="text-[30px] font-[600] cursor-pointer" onClick={() => setAddModal(false)}>X</p>
+            </div>
+            <div className="flex flex-col items-center gap-7 py-[20px]">
+              <img src={img} className="w-[250px] h-[200px] ml-[35px]" alt="Picture" />
+              <p className="text-[30px]">Drag photos and videos here</p>
+              {/* <button className="bg-[#3B82F6] text-[white] text-[20px] rounded-xl p-[10px_50px]">Select from computer</button> */}
+              <label htmlFor="img" className="bg-[#3B82F6] text-[white] text-[20px] rounded-xl p-[10px_50px]">Select from computer</label>
+            </div>
+            <input multiple onChange={(e) => reader(e)} type="file" id="img" className="hidden" />
           </div>
-
-          <div className="flex flex-col items-center gap-7 py-[20px]">
-            <img
-              src={img}
-              className="w-[250px] h-[200px] ml-[35px]"
-              alt="Picture"
-            />
-            <p className="text-[30px]">Drag photos and videos here</p>
-            {/* <button className="bg-[#3B82F6] text-[white] text-[20px] rounded-xl p-[10px_50px]">Select from computer</button> */}
-            <label
-              htmlFor="img"
-              className="bg-[#3B82F6] text-[white] text-[20px] rounded-xl p-[10px_50px]"
-            >
-              Select from computer
-            </label>
-
         ) : null
       }
       {
@@ -554,37 +546,9 @@ export const Layout = () => {
 
             
             {/* <img src={img} className="w-[100%] h-[61.4svh]" alt="Picture" /> */}
-
           </div>
-          <input
-            multiple
-            onChange={(e) => reader(e)}
-            type="file"
-            id="img"
-            className="hidden"
-          />
-        </div>
-      ) : null}
-      {modal ? (
-        <div className="bg-[white] fixed top-[15%] w-[35%] h-[70svh] right-[30%] rounded-md z-50 flex-col flex justify-between">
-          <div className="flex items-center p-[10px] justify-between border border-[gray]">
-            <p
-              className="text-[30px] font-[600] cursor-pointer"
-              onClick={() => setModal(false)}
-            >
-              X
-            </p>
-            <p
-              className="text-[30px] text-[#3B82F6] hover:text-black cursor-pointer"
-              onClick={() => post()}
-            >
-              Post
-            </p>
-          </div>
-
-          <img src={img} className="w-[100%] h-[61.4svh]" alt="Picture" />
-        </div>
-      ) : null}
+        ) : null
+      }
     </main>
   );
 };
