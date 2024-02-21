@@ -270,7 +270,9 @@ export const Layout = () => {
       <div></div>
 
       {/* Контентная часть */}
-      <aside className="right w-[100%]">
+
+      <aside className="right w-[81%]">
+
         <Outlet />
         {/* Футер */}
 
