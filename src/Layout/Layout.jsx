@@ -47,12 +47,69 @@ export const Layout = () => {
   const [modal , setModal] = useState(false)
   const [img , setImg] = useState('')
   const [img2 , setImg2] = useState('')
-
+  const [data , setData] = useState([])
+  const [files , setFiles] = useState([])
+// console.log(data);
   const myId = getToken().sid;
+
+  function reader(e)
+  {
+
+    for(let i = 0 ; i <= e.target.files.length ; i++)
+    {
+      const file = e.target.files[i];
+      setFiles(e.target.files[0])
+
+      if (file)
+      {
+        const reader = new FileReader();
+        
+        reader.readAsDataURL(file);
+        reader.onload = (e) =>
+        {
+          const base64 = e.target.result;
+          setImg(base64);
+       
+          // setData([...data , base64])
+          // console.log(base64);
+        };
+        
+        setAddModal(false)
+        setModal(true)
+      }
+      
+    }
+  }
+  async function post()
+  {
+    let form = new FormData()
+    form.append("Title" ,"Img")
+    form.append("Content" , "Img")
+    form.append("Images" , files)
+    // for(let i = 0 ; i < files.length ; i++)
+    // {
+    //   form.append(`Image${i}` , files[i])
+    // }
+
+    try
+    {
+        let {data} = await axiosRequest.post(`Post/add-post` , form , 
+        {
+          "Content-Type":"Multipart/form-data"
+        })
+        console.log(data.statusCode);
+        setModal(false)
+    }
+    catch(error)
+    {
+        console.log(error);
+    }
+  }
+  
 
   useEffect(() => {
     AOS.init();
-    
+
     setImg(empty)
   }, []);
 
@@ -270,7 +327,7 @@ export const Layout = () => {
       <div></div>
 
       {/* Контентная часть */}
-      <aside className="right bg-[red]">
+      <aside className="right">
         <Outlet />
         {/* Футер */}
 
@@ -413,8 +470,19 @@ export const Layout = () => {
               <p className="text-[30px] font-[600] cursor-pointer" onClick={() => setModal(false)}>X</p>
               <p className="text-[30px] text-[#3B82F6] hover:text-black cursor-pointer" onClick={() => post()}>Post</p>
             </div>
+            <Swiper className="mySwiper">
+              {
+                data.length > 0 && data?.map((el , i)=>
+                  (
+                    <SwiperSlide key={i}>
+                      <img src={el} className="w-[100%] h-[100%]" alt="Picture" />
+                    </SwiperSlide>
+                  ))
+              }
+            </Swiper>
+
             
-            <img src={img} className="w-[100%] h-[61.4svh]" alt="Picture" />
+            {/* <img src={img} className="w-[100%] h-[61.4svh]" alt="Picture" /> */}
           </div>
         ) : null
       }
