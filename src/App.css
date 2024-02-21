@@ -54,5 +54,14 @@
   display: block;
   cursor: pointer;
 }
-
-
+.searchMod{
+  position: fixed;
+  background-color: white;
+  width: 30.5%;
+  height: 100vh;
+  margin-left: 6%;
+  border-right: 1px solid rgb(225, 225, 225);
+  border-radius: 0 20px 20px 0 ;
+  z-index: 999;
+  box-shadow: 5px 5px 10px rgb(230, 230, 230);
+}
