@@ -1,12 +1,16 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import counterSlice from "../reducers/search/searchred";
-
+import search from "../reducers/search/searchred";
 
 import profile from "../reducers/profile/profile";
+import  Chat  from "../reducers/Message/Message";
+
+
+
 export const store = configureStore({
   reducer: {
    profile, 
-
+   massage:Chat,
+    searchUsers:search
   },
 });

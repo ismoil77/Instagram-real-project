@@ -388,10 +388,11 @@ export const Layout = () => {
 
       {/* Контентная часть */}
 
- 
+
 
 
       <aside className="right w-[80%]">
+
 
         <Outlet />
         {/* Футер */}
