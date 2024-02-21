@@ -327,7 +327,9 @@ export const Layout = () => {
       <div></div>
 
       {/* Контентная часть */}
-      <aside className="right">
+
+      <aside className="right w-[80%]">
+
         <Outlet />
         {/* Футер */}
 
