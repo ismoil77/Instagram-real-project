@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { getById, getUser, searchUser } from '../../api/Message/messageApi';
+import { getById, getMessage, getUser, searchUser } from '../../api/Message/messageApi';
 
 
 
@@ -9,10 +9,14 @@ export const Chat = createSlice({
     value: 0,
     data:[],
     user1:[],
-    byid:[]
+    byid:[],
+    chatMessage:[],
+    userMessage:{}
   },
   reducers: {
-   
+  turbo: (state, action) => {
+    state.userMessage = action.payload
+  }
   },
   extraReducers:(builder)=>{
     builder.addCase(getUser.pending,(state,action)=>{
@@ -38,14 +42,24 @@ export const Chat = createSlice({
     })
     builder.addCase(getById.fulfilled,(state,action)=>{
       state.byid=action.payload
+      state.userMessage = action.payload
     })
     builder.addCase(getById.rejected,(state,action)=>{
+      console.log(3);
+    })
+    builder.addCase(getMessage.pending,(state,action)=>{
+      console.log(1);
+    })
+    builder.addCase(getMessage.fulfilled,(state,action)=>{
+      state.chatMessage = action.payload
+    })
+    builder.addCase(getMessage.rejected,(state,action)=>{
       console.log(3);
     })
    
   }
 })
 
-export const { } = Chat.actions
+export const {setUserMessage, turbo } = Chat.actions
 
 export default Chat.reducer

@@ -41,22 +41,22 @@ const Login = () => {
 
 
   return (
-    <div className='w-[100%] p-[74px_250px] flex justify-between '>
-      <div className='flex flex-col gap-3 w-[35%]  items-center'>
+    <div className='w-[100%] pt-[85px] flex flex-wrap justify-center gap-[100px] bg-[white] items-center'>
+      <div className='flex flex-col gap-3 w-[20%]  items-center'>
         <img src={LogIn} alt="Picture" className='mix-blend-multiply' />
         <p className="text-[20px] text-[gray]">Get the app</p>
         <img src={links} alt="Picture" className='w-[100%]' />
       </div>
-      <div className='w-[45%] flex flex-col gap-5'>
-        <div className='w-[100%] flex flex-col items-center p-[40px_20px] rounded-md border-[1.7px] border-[#E2E8F0] gap-5'>
-          <img src={logo} alt="" />
+      <div className='w-[25%] flex flex-col gap-5'>
+        <div className='w-[100%] flex flex-col items-center p-[20px] rounded-md border-[1.7px] border-[#E2E8F0] gap-5'>
+          <img src={logo} className='w-[70%]' alt="" />
           <form onSubmit={loginFormik.handleSubmit} className='w-[95%]  flex flex-col gap-5'>
             <input name='userName' value={loginFormik.values.userName} onChange={loginFormik.handleChange} type="text" className='w-[100%] h-[6svh] rounded-md border border-[#E2E8F0] text-[20px] px-[1%] outline-none' placeholder='Phone number, user name or email' />
             <input name='password' value={loginFormik.values.password} onChange={loginFormik.handleChange} type="text" className='w-[100%] h-[6svh] rounded-md border border-[#E2E8F0] text-[20px] px-[1%] outline-none' placeholder='Password' />
             <button className='bg-[#3B82F6] text-[20px] text-[white] w-[100%] py-[10px] rounded-xl' type='submit'>Log in</button>
             <button className='text-[#3B82F6] text-[20px] w-[100%] py-[10px] rounded-xl'>Forgot password?</button>
           </form>
-          <div className='flex items-center justify-between w-[95%]'>
+          <div className='flex items-center justify-between w-[95%] my-[-15px]'>
             <hr className='w-[45%] border border-[#E2E8F0]' />
             <p className='text-[20px] text-[gray]'>or</p>
             <hr className='w-[45%] border border-[#E2E8F0]'/>
@@ -70,6 +70,9 @@ const Login = () => {
           <p className="text-[20px]">Don't have an account?</p>
           <p className="text-[20px] text-[#3B82F6] cursor-pointer" onClick={() => navigation("/registration")}>Sign up</p>
         </div>
+      </div>
+      <div className='w-[100%] bg-[white] text-gray-400 text-[16px] flex justify-center py-[10px]'>
+        <p>© 2024 Instagram from Meta</p>
       </div>
     </div>
   )
