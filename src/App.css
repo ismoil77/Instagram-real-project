@@ -87,8 +87,10 @@ body {
 }
 
 .swiper {
-  width: 100%;
-  height: 61.4svh;
+  width: 90%;
+  margin: auto;
+  height: 30svh;
+  margin: 20px 0;
 }
 
 .swiper-slide {
@@ -108,3 +110,4 @@ body {
   height: 100%;
   object-fit: cover;
 }
+
