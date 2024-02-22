@@ -21,6 +21,7 @@ import { Avatar, TextField } from "@mui/material";
 import navProfile from "../assets/images/nav-profile.jpg";
 
 import ClearIcon from "@mui/icons-material/Clear";
+import video from '/src/assets/video/i.mp4'
 
 // import search from "../pages/search/search";
 
@@ -29,20 +30,22 @@ import "aos/dist/aos.css";
 import HomeIcon from "../icons/Layout/HomeIcon";
 import ReelsIcon from "../icons/Layout/ReelsIcon";
 import MessageIcon from "../icons/Layout/MessageIcon";
-import { getToken } from "../utils/token";
-import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
+import { destroyToken, getToken } from "../utils/token";
+import { Link, NavLink, Outlet, useLocation, useNavigate, useNavigation } from "react-router-dom";
 import instagram from "/src/assets/images/LOGO.png";
 import empty from "/src/assets/images/empty.png";
 import { axiosRequest } from "../utils/axiosRequest";
 import axios from "axios";
 import "../App.css";
 import MySearch from "../components/switcher/search/MySearch";
+import SettingsIcon from '@mui/icons-material/Settings';
 
 export const Layout = () => {
   // Функция для модального окна "Еще"
 
   const location = useLocation();
   const dispatch = useDispatch();
+  const navigation = useNavigate()
   let [followingState, setFollowingState] = useState(false);
 
   
@@ -55,7 +58,7 @@ export const Layout = () => {
   const [img2 , setImg2] = useState('')
   const [data , setData] = useState([])
   const [files , setFiles] = useState([])
-// console.log(data);
+  const [moreModal , setMoreModal] = useState(false)
 
   const myId = getToken().sid;
 
@@ -65,7 +68,8 @@ export const Layout = () => {
     for(let i = 0 ; i <= e.target.files.length ; i++)
     {
       const file = e.target.files[i];
-      setFiles(e.target.files[0])
+      // setFiles(e.target.files[0])
+      setFiles(e => [...e , file])
 
       if (file)
       {
@@ -75,7 +79,8 @@ export const Layout = () => {
         reader.onload = (e) =>
         {
           const base64 = e.target.result;
-          setImg(base64);
+          // setImg(base64);
+          setData(prevData => [...prevData, base64]);
        
           // setData([...data , base64])
           // console.log(base64);
@@ -92,11 +97,12 @@ export const Layout = () => {
     let form = new FormData()
     form.append("Title" ,"Img")
     form.append("Content" , "Img")
-    form.append("Images" , files)
-    // for(let i = 0 ; i < files.length ; i++)
-    // {
-    //   form.append(`Image${i}` , files[i])
-    // }
+    // form.append("Images" , files)
+    for(let i = 0 ; i < files.length - 1 ; i++)
+    {
+      form.append("Images" , files[i])
+      console.log(files[i]);
+    }
 
     try
     {
@@ -106,21 +112,23 @@ export const Layout = () => {
         })
         console.log(data.statusCode);
         setModal(false)
+        setData(e => [...e , empty])
     }
     catch(error)
     {
         console.log(error);
     }
   }
+  function Logout()
+  {
+    destroyToken("access_token")
+    navigation("/")
+  }
   
 
   useEffect(() => {
     AOS.init();
-
-
- 
     setImg(empty)
-
   }, []);
 
   return (
@@ -357,7 +365,7 @@ export const Layout = () => {
               </li>
             </NavLink>
 
-            <li className="flex items-center gap-[15px] hover:bg-[#00000010] rounded-[7px] p-[10px] transition-all duration-300 cursor-pointer">
+            <li onClick={() => setMoreModal(!moreModal)} className="flex items-center gap-[15px] hover:bg-[#00000010] rounded-[7px] p-[10px] transition-all duration-300 cursor-pointer">
               <FontAwesomeIcon icon={faBars} className="text-[20px]" />
               <p
                 className={`${
@@ -388,7 +396,9 @@ export const Layout = () => {
 
 
 
+
       <aside className="right w-[94%]">
+
 
 
         <Outlet />
@@ -498,28 +508,32 @@ export const Layout = () => {
       {
         addModal ?
         (
-          <div className="z-20 fixed w-[100%] h-[100%] top-0 right-0 bg-[#0000008F]"></div>
+          <div className="z-20 fixed w-[100%] h-[100%] top-0 right-0 bg-[#0000008F] p-[20px]">
+            <p className="text-[30px] cursor-pointer text-end text-gray-400" onClick={() => setAddModal(false)}>X</p>
+          </div>
         ) : null
       }
       {
         modal ?
         (
-          <div className="z-20 fixed w-[100%] h-[100%] top-0 right-0 bg-[#0000008F]"></div>
+          <div className="z-20 fixed w-[100%] h-[100%] top-0 right-0 bg-[#0000008F] text-gray-400 p-[20px]">
+            <p className="text-[30px] text-end cursor-pointer" onClick={() => setModal(false)}>X</p>
+          </div>
         ) : null
       }
       {
         addModal ?
         (
-          <div className="bg-[white] fixed top-[15%] w-[35%] h-[70svh] right-[30%] rounded-md z-50">
-            <div className="flex items-center p-[20px] justify-between">
+          <div className="bg-[white] fixed top-[15%] w-[30%] right-[33%] rounded-md z-50">
+            <div className="flex items-center p-[10px] border-b-[gray] border-b-[1px] justify-center">
               <p className="text-[30px]">Create new post</p>
-              <p className="text-[30px] font-[600] cursor-pointer" onClick={() => setAddModal(false)}>X</p>
+              {/* <p className="text-[30px] cursor-pointer" onClick={() => setAddModal(false)}>X</p> */}
             </div>
-            <div className="flex flex-col items-center gap-7 py-[20px]">
-              <img src={img} className="w-[250px] h-[200px] ml-[35px]" alt="Picture" />
-              <p className="text-[30px]">Drag photos and videos here</p>
+            <div className="flex flex-col items-center gap-7 py-[40px]">
+              <img src={img} className="w-[200px] h-[150px] ml-[35px]" alt="Picture" />
+              <p className="text-[25px] mb-[-20px] mt-[30px]">Drag photos and videos here</p>
               {/* <button className="bg-[#3B82F6] text-[white] text-[20px] rounded-xl p-[10px_50px]">Select from computer</button> */}
-              <label htmlFor="img" className="bg-[#3B82F6] text-[white] text-[20px] rounded-xl p-[10px_50px]">Select from computer</label>
+              <label htmlFor="img" className="bg-[#3B82F6] text-[white] text-[20px] rounded-xl p-[8px_30px]">Select from computer</label>
             </div>
             <input multiple onChange={(e) => reader(e)} type="file" id="img" className="hidden" />
           </div>
@@ -528,24 +542,60 @@ export const Layout = () => {
       {
         modal ?
         (
-          <div className="bg-[white] fixed top-[15%] w-[35%] h-[70svh] right-[30%] rounded-md z-50 flex-col flex justify-between">
-            <div className="flex items-center p-[10px] justify-between border border-[gray]">
-              <p className="text-[30px] font-[600] cursor-pointer" onClick={() => setModal(false)}>X</p>
+          <div className="bg-[white] fixed top-[15%] w-[30%]  right-[33%] rounded-md z-50 flex-col flex justify-between">
+            <div className="flex items-center p-[10px] justify-end border border-[gray]">
+              {/* <p className="text-[30px] font-[600] cursor-pointer" onClick={() => setModal(false)}>X</p> */}
               <p className="text-[30px] text-[#3B82F6] hover:text-black cursor-pointer" onClick={() => post()}>Post</p>
             </div>
             <Swiper className="mySwiper">
               {
                 data.length > 0 && data?.map((el , i)=>
-                  (
+                {
+                  let split = files[i].name.split(".")
+                  let last = split[split.length - 1].toLowerCase()
+                  console.log(last);
+                  // let imageFiles = ['jpg', 'jpeg', 'png', 'gif', 'bmp']
+                  let vidoeFiles = ['mp4', 'avi', 'mov', 'wmv', 'flv']
+                  if(vidoeFiles.includes(last))
+                  {
+                    return(
+
                     <SwiperSlide key={i}>
-                      <img src={el} className="w-[100%] h-[100%]" alt="Picture" />
+                      <video autoPlay loop className="w-[100%] h-[100%] bg-black">
+                        <source type="video/mp4" className="w-[100%] h-[100%]"  src={`${URL.createObjectURL(files[i])}`} onError={(error) => console.log(error)} />
+                      </video> 
                     </SwiperSlide>
-                  ))
+                    )
+                  }
+                  else
+                  {
+                    return(
+                      <SwiperSlide key={i}>
+                        <img src={el} className="w-[100%] h-[100%]" alt="Picture" />
+                      </SwiperSlide>
+                    )
+                  }
+                  
+                })
               }
             </Swiper>
 
             
             {/* <img src={img} className="w-[100%] h-[61.4svh]" alt="Picture" /> */}
+          </div>
+        ) : null
+      }
+      {
+        moreModal ?
+        (
+          <div className="bg-white shadow-2xl p-[20px] rounded-[20px] w-[18%] fixed bottom-[170px] left-[20px] flex flex-col gap-3 items-start">
+            <button className=" flex px-[5%] w-[100%] rounded-md bg-[#f2f2f2] hover:bg-[#ccc] text-[20px]  py-[10px] gap-[20px] item-center"> <SettingsIcon/> Setting</button>
+            <button className=" flex px-[5%] w-[100%] rounded-md bg-[#f2f2f2] hover:bg-[#ccc] text-[20px]  py-[10px] gap-[20px] item-center">  Your Actions</button>
+            <button className=" flex px-[5%] w-[100%] rounded-md bg-[#f2f2f2] hover:bg-[#ccc] text-[20px]  py-[10px] gap-[20px] item-center">  Saved</button>
+            <button className=" flex px-[5%] w-[100%] rounded-md bg-[#f2f2f2] hover:bg-[#ccc] text-[20px]  py-[10px] gap-[20px] item-center">  Change theme</button>
+            <button className=" flex px-[5%] w-[100%] rounded-md bg-[#f2f2f2] hover:bg-[#ccc] text-[20px]  py-[10px] gap-[20px] item-center text-red-600" >  Errors</button>
+            <hr className="border border-[gray] my-[-10px]" />
+            <button className="flex px-[5%] w-[100%] rounded-md bg-[#f2f2f2] hover:bg-[#ccc] text-[20px] text-[red] py-[10px]" onClick={() => Logout()}>Log out</button>
           </div>
         ) : null
       }
