@@ -99,122 +99,123 @@ const [muteIdx,setMuteIdx]=useState('')
             </div>
             <div className="w-[70px] h-[70px] rounded-[50%]  flex justify-center items-center bg-gradient-to-r from-[#DE0046] to-[#F7A34B]">
               <img
-                className="w-[65px]  h-[65px] rounded-[50%] border-[3px] object-cover"
-                src="https://ultimatedubaiguide.com/wp-content/uploads/2023/08/Brand-Cover-of-IMG-World-of-Adventure.jpg.webp"
-                alt=""
-              />
-            </div>
-            <div className="w-[70px] h-[70px] rounded-[50%]  flex justify-center items-center bg-gradient-to-r from-[#DE0046] to-[#F7A34B]">
-              <img
-                className="w-[65px]  h-[65px] rounded-[50%] border-[3px] object-cover"
-                src="https://ultimatedubaiguide.com/wp-content/uploads/2023/08/Brand-Cover-of-IMG-World-of-Adventure.jpg.webp"
-                alt=""
-              />
-            </div>
-            <div className="w-[70px] h-[70px] rounded-[50%]  flex justify-center items-center bg-gradient-to-r from-[#DE0046] to-[#F7A34B]">
-              <img
-                className="w-[65px]  h-[65px] rounded-[50%] border-[3px] object-cover"
-                src="https://ultimatedubaiguide.com/wp-content/uploads/2023/08/Brand-Cover-of-IMG-World-of-Adventure.jpg.webp"
-                alt=""
-              />
-            </div>
-          </div>
-          <div className="" >
-            {
-              data.map((el,i)=>{
-                return (
-                  <>
-                  <div className="flex flex-col gap-[40px]" key={el.postId}>
-                    <div className="flex w-[700px] gap-6">
+
+className="w-[65px]  h-[65px] rounded-[50%] border-[3px] object-cover"
+src="https://ultimatedubaiguide.com/wp-content/uploads/2023/08/Brand-Cover-of-IMG-World-of-Adventure.jpg.webp"
+alt=""
+/>
+</div>
+<div className="w-[70px] h-[70px] rounded-[50%]  flex justify-center items-center bg-gradient-to-r from-[#DE0046] to-[#F7A34B]">
+<img
+className="w-[65px]  h-[65px] rounded-[50%] border-[3px] object-cover"
+src="https://ultimatedubaiguide.com/wp-content/uploads/2023/08/Brand-Cover-of-IMG-World-of-Adventure.jpg.webp"
+alt=""
+/>
+</div>
+<div className="w-[70px] h-[70px] rounded-[50%]  flex justify-center items-center bg-gradient-to-r from-[#DE0046] to-[#F7A34B]">
+<img
+className="w-[65px]  h-[65px] rounded-[50%] border-[3px] object-cover"
+src="https://ultimatedubaiguide.com/wp-content/uploads/2023/08/Brand-Cover-of-IMG-World-of-Adventure.jpg.webp"
+alt=""
+/>
+</div>
+</div>
+<div className="" >
+{
+data.map((el,i)=>{
+return (
+  <>
+  <div className="flex flex-col gap-[40px]" key={el.postId}>
+    <div className="flex w-[700px] gap-6">
 
 
-                    <Swiper navigation={true} modules={[Navigation]} className="mySwiper">
+    <Swiper navigation={true} modules={[Navigation]} className="mySwiper">
 
-                    {
-                      el.images.map((elImg)=>{
-                        let checkType = elImg.split(".")
-                        let resulOfCheck = checkType[checkType.length-1].toLowerCase()
-                        let exampleImg = ['jpg', 'jpeg', 'png', 'gif', 'bmp']
-                        let exampleVideo = ['mp4', 'avi', 'mov', 'wmv', 'flv']
-                        if(exampleImg.includes(resulOfCheck)){
+    {
+      el.images.map((elImg)=>{
+        let checkType = elImg.split(".")
+        let resulOfCheck = checkType[checkType.length-1].toLowerCase()
+        let exampleImg = ['jpg', 'jpeg', 'png', 'gif', 'bmp']
+        let exampleVideo = ['mp4', 'avi', 'mov', 'wmv', 'flv']
+        if(exampleImg.includes(resulOfCheck)){
 // console.log("IMG");
 return    <SwiperSlide><img  src={`${urlImg}/${elImg}`} className=" rounded-[] h-[500px]" alt="" srcset="" /></SwiperSlide>
 
 
-                        }
-                        else if(exampleVideo.includes(resulOfCheck)){
-                          console.log("Video");
+        }
+        else if(exampleVideo.includes(resulOfCheck)){
+          console.log("Video");
 
 return (
-  <>
+<>
 
- <div className="video-player">
+<div className="video-player">
 {
- idx==el.postId?<div><ReactPlayer width='700px' height='500px' url={`${urlImg}/${elImg}`} loop muted={mut} playing={playy} onClick={(e)=>console.log(e.target.playing='true')}  className="bg-[black]"/>
- <button onClick={()=>{
-  console.log(1);
-  if(mut){
-    setMut(false)
-  }
-  else{
-    setMut(true)
-  }
- }}>Muted</button>
- <button onClick={()=>{
-  
-  if(playy){
-     setPlayy(false)
-  }
-
- else{
-  setPlayy(true)
- }
- 
- setIdx(el.postId)
- }}>play</button></div>:<div><ReactPlayer width='700px' height='500px' url={`${urlImg}/${elImg}`} muted={mut} playing={false} onClick={(e)=>console.log(e.target.playing='true')}  className="bg-[black]"/>
- <button onClick={()=>{
-  console.log(1);
-  if(mut){
-    setMut(false)
-  }
-  else{
-    setMut(true)
-  }
- }}>Muted</button>
- <button onClick={()=>{
-
-  if(playy){
-     setPlayy(false)
-  }
-
- else{
-  setPlayy(true)
- }
- setIdx(el.postId)
- }}>play</button></div>
+idx==el.postId?<div><ReactPlayer width='700px' height='500px' url={`${urlImg}/${elImg}`} loop muted={mut} playing={playy} onClick={(e)=>console.log(e.target.playing='true')}  className="bg-[black]"/>
+<button onClick={()=>{
+console.log(1);
+if(mut){
+setMut(false)
 }
- 
-    </div>
+else{
+setMut(true)
+}
+}}>Muted</button>
+<button onClick={()=>{
+
+if(playy){
+setPlayy(false)
+}
+
+else{
+setPlayy(true)
+}
+
+setIdx(el.postId)
+}}>play</button></div>:<div><ReactPlayer width='700px' height='500px' url={`${urlImg}/${elImg}`} muted={mut} playing={false} onClick={(e)=>console.log(e.target.playing='true')}  className="bg-[black]"/>
+<button onClick={()=>{
+console.log(1);
+if(mut){
+setMut(false)
+}
+else{
+setMut(true)
+}
+}}>Muted</button>
+<button onClick={()=>{
+
+if(playy){
+setPlayy(false)
+}
+
+else{
+setPlayy(true)
+}
+setIdx(el.postId)
+}}>play</button></div>
+}
+
+</div>
+</>
+)
+        }
+      })
+    }
+    </Swiper>
+      </div>
+  </div>
   </>
 )
-                        }
-                      })
-                    }
-                    </Swiper>
-                      </div>
-                  </div>
-                  </>
-                )
-              })
-            }
-          </div>
-        </div>
-        <div className="">
-          <p>isidnfnswefon</p>
-        </div>
-      </div>
-    </>
-  );
+})
+}
+</div>
+</div>
+<div className="">
+<p>isidnfnswefon</p>
+</div>
+</div>
+</>
+);
 };
 
 export default Home;
