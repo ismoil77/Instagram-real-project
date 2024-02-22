@@ -80,6 +80,7 @@ body {
 }
 
 body {
+  /* background: #eee; */
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-size: 14px;
   color: #000;
@@ -110,5 +111,40 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+
+.open
+{
+    transition: all 0.3s linear;
+    animation: right 1s;
+}
+@keyframes right
+{
+    from
+    {
+        transform: translateX(100%);
+    }
+    to
+    {
+        transform: translateX(0);
+    }
+}
+
+.close
+{
+    transition: all 0.3s linear;
+    animation: left 1s;
+}
+@keyframes left
+{
+    from
+    {
+        transform: translateX(0);
+    }
+    to
+    {
+        transform: translateX(100%);
+    }
 }
 
