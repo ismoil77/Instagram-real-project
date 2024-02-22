@@ -388,7 +388,7 @@ export const Layout = () => {
 
 
 
-      <aside className="right w-[80%]">
+      <aside className="right w-[94%]">
 
 
         <Outlet />
