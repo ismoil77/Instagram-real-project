@@ -7,6 +7,7 @@ import Message from "./pages/Message/Message";
 import Natification from "./pages/natification/Natification";
 import Profile from "./pages/Profile/Profile"; 
 import Settings from "./pages/Settings/Settings";
+import editProfile from "./pages/editProfile/editProfile";
 import { createBrowserRouter, RouterProvider } from "react-router-dom"; 
 import { Layout } from "./Layout/Layout"; 
 import Registration from "./pages/Registration/Registration"; 
@@ -44,6 +45,10 @@ export const App = () => {
         {
           path: "profile",
           element: <Profile />,
+        },
+        {
+          path: "profile/account/editProfile",
+          element: <editProfile />,
         },
         {
           path: "profile/account/settings",

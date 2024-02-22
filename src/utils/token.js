@@ -3,7 +3,7 @@ function saveToken(token) {
     localStorage.setItem("access_token", token);
 }
 
-function getToken() {
+ function getToken() {
     try {
         return jwtDecode(localStorage.getItem("access_token"))
     } catch (error) {}
