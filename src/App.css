@@ -90,9 +90,8 @@ body {
 
 .swiper {
   width: 90%;
-  margin: auto;
   height: 30svh;
-  margin: 20px 0;
+  margin: 20px auto;
 }
 
 .swiper-slide {
