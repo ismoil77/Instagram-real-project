@@ -32,7 +32,7 @@ import ReelsIcon from "../icons/Layout/ReelsIcon";
 import MessageIcon from "../icons/Layout/MessageIcon";
 import { destroyToken, getToken } from "../utils/token";
 import { Link, NavLink, Outlet, useLocation, useNavigate, useNavigation } from "react-router-dom";
-import instagram from "/src/assets/images/LOGO.png";
+import instagram from "/src/assets/images/Instagram_logo.svg.png";
 import empty from "/src/assets/images/empty.png";
 import { axiosRequest } from "../utils/axiosRequest";
 import axios from "axios";
@@ -143,7 +143,7 @@ export const Layout = () => {
 
   return (
     // Главный контейнер
-    <main className="flex justify-between dark:bg-black dark:text-white">
+    <main className="flex justify-between dark:bg-black dark:text-white ">
       {/* Флекс контейнер */}
       {/* Navbar */}
       <aside
@@ -163,28 +163,28 @@ export const Layout = () => {
             searchMod === true
               ? "w-[6%]"
               : "w-[19%]"
-          } panel-navigation fixed py-[33px] px-[15px] h-[100%] border-r-[1px] border-[#d8d8d8]`}
+          } panel-navigation fixed py-[34px] px-[15px] h-[100vh]  border-r-[1px] border-[#d8d8d8]`}
         >
           <ul
             className={`${
               "modalSearch" ? "items-start gap-[16.5px]" : "items-stretch"
-            } flex flex-col gap-[12px]`}
+            } flex flex-col gap-[1.4vh_0]`}
           >
             {/* Logo */}
             <Link to="/basic">
               <li
-                className={`${
+                className={` ml-[5px]  mb-[4vh] ${
                   location.pathname === "/basic/message" ||
                   location.pathname === "/basic/message/newMessage" ||
                   searchMod === true
                     ? "hidden"
                     : "block"
-                }mb-[15px]`}
+                }`}
               >
                 <img
                   src={instagram}
                   alt="adasd"
-                  className={` w-[80%] ${
+                  className={` w-[54%] ${
                     location.pathname === "/basic/message" ||
                     location.pathname === "/basic/message/newMessage" ||
                     searchMod === true
@@ -195,10 +195,18 @@ export const Layout = () => {
               </li>
 
               {/* instagram icon */}
-              <li className="px-[9px]" onClick={() => setSearchMod(false)}>
+              <li  className={`px-[7px]  mb-[5.7vh] ${
+                  location.pathname === "/basic/message" ||
+                  location.pathname === "/basic/message/newMessage" ||
+                  searchMod === true
+                    ? "block"
+                    : "hidden"
+                }`} onClick={() => setSearchMod(false)}>
                 <InstagramIcon sx={{ fontSize: "30px" }} />
               </li>
             </Link>
+
+
             <NavLink to="/basic" onClick={() => setSearchMod(false)}>
               <li className="flex items-center gap-[15px] hover:bg-[#00000010] rounded-[7px] p-[10px] transition-all duration-300">
                 {/* <img src={navHome} alt="" /> */}
@@ -375,7 +383,7 @@ export const Layout = () => {
               </li>
             </NavLink>
 
-            <li onClick={() => setMoreModal(!moreModal)} className="flex items-center gap-[15px] hover:bg-[#00000010] rounded-[7px] p-[10px] transition-all duration-300 cursor-pointer">
+            <li onClick={() => setMoreModal(!moreModal)} className="flex items-center gap-[15px] hover:bg-[#00000010] rounded-[7px] p-[10px] px-[14px] transition-all duration-300 cursor-pointer">
               <FontAwesomeIcon icon={faBars} className="text-[20px]" />
               <p
                 className={`${
@@ -407,7 +415,18 @@ export const Layout = () => {
 
 
 
-      <aside className="right w-[81%]">
+
+      <aside 
+      // className="right w-[94%]"
+        className={`${
+          location.pathname === "/basic/message" ||
+          location.pathname === "/basic/message/newMessage" ||
+          searchMod === true
+            ? "w-[94%]"
+            : "w-[81%]"
+        }`}
+      >
+
 
 
 
