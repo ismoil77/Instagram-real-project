@@ -11,6 +11,8 @@ import editProfile from "./pages/editProfile/editProfile";
 import { createBrowserRouter, RouterProvider } from "react-router-dom"; 
 import { Layout } from "./Layout/Layout"; 
 import Registration from "./pages/Registration/Registration"; 
+import Security from "./pages/Security/Security";
+import Auth from "./components/Auth/Auth";
  
 export const App = () => { 
   const router = createBrowserRouter([
@@ -19,12 +21,12 @@ export const App = () => {
       element: <Login />,
     },
     {
-      path: "/basic",
+      path: "/basic", 
       element: <Layout />,
       children: [
         {
           index: true,
-          element: <Home />,
+          element: <Home/>,
         },
         {
           path: "explore",
@@ -58,6 +60,10 @@ export const App = () => {
           path: "profile/account/settings",
           element: <Settings />,
         },
+        {
+          path:"security",
+          element:<Security/>
+        }
       ],
     },
     {
