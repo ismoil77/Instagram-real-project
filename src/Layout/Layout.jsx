@@ -39,9 +39,11 @@ import axios from "axios";
 import "../App.css";
 import MySearch from "../components/switcher/search/MySearch";
 import SettingsIcon from '@mui/icons-material/Settings';
+import ShieldOutlinedIcon from '@mui/icons-material/ShieldOutlined';
 
 export const Layout = () => {
   // Функция для модального окна "Еще"
+
 
   const location = useLocation();
   const dispatch = useDispatch();
@@ -60,7 +62,15 @@ export const Layout = () => {
   const [files , setFiles] = useState([])
   const [moreModal , setMoreModal] = useState(false)
 
-  const myId = getToken().sid;
+  window.addEventListener("contextmenu" , (e) =>
+  {
+    e.preventDefault()
+    setMoreModal(false)
+  })
+
+  const imgVideo = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxMRvzkZRjUK9m5MdeLSNPePkbddT-kBUiGQ&usqp=CAU"
+
+  // const myId = getToken().sid;
 
   function reader(e)
   {
@@ -112,7 +122,7 @@ export const Layout = () => {
         })
         console.log(data.statusCode);
         setModal(false)
-        setData(e => [...e , empty])
+        setData(e => [...e , imgVideo])
     }
     catch(error)
     {
@@ -397,7 +407,7 @@ export const Layout = () => {
 
 
 
-      <aside className="right w-[94%]">
+      <aside className="right w-[81%]">
 
 
 
@@ -508,7 +518,7 @@ export const Layout = () => {
       {
         addModal ?
         (
-          <div className="z-20 fixed w-[100%] h-[100%] top-0 right-0 bg-[#0000008F] p-[20px]">
+          <div className="z-20 fixed w-[100%] h-[100%] top-0 right-0 bg-[#0000008F] p-[20px]" onClick={() => setAddModal(false)}>
             <p className="text-[30px] cursor-pointer text-end text-gray-400" onClick={() => setAddModal(false)}>X</p>
           </div>
         ) : null
@@ -516,7 +526,7 @@ export const Layout = () => {
       {
         modal ?
         (
-          <div className="z-20 fixed w-[100%] h-[100%] top-0 right-0 bg-[#0000008F] text-gray-400 p-[20px]">
+          <div onClick={() => setModal(false)} className="z-20 fixed w-[100%] h-[100%] top-0 right-0 bg-[#0000008F] text-gray-400 p-[20px]">
             <p className="text-[30px] text-end cursor-pointer" onClick={() => setModal(false)}>X</p>
           </div>
         ) : null
@@ -530,10 +540,10 @@ export const Layout = () => {
               {/* <p className="text-[30px] cursor-pointer" onClick={() => setAddModal(false)}>X</p> */}
             </div>
             <div className="flex flex-col items-center gap-7 py-[40px]">
-              <img src={img} className="w-[200px] h-[150px] ml-[35px]" alt="Picture" />
+              <img src={imgVideo} className="w-[200px] h-[150px] " alt="Picture" />
               <p className="text-[25px] mb-[-20px] mt-[30px]">Drag photos and videos here</p>
               {/* <button className="bg-[#3B82F6] text-[white] text-[20px] rounded-xl p-[10px_50px]">Select from computer</button> */}
-              <label htmlFor="img" className="bg-[#3B82F6] text-[white] text-[20px] rounded-xl p-[8px_30px]">Select from computer</label>
+              <label htmlFor="img" className="bg-[#3B82F6] text-[white] text-[20px] rounded-xl p-[8px_30px] cursor-pointer">Select from computer</label>
             </div>
             <input multiple onChange={(e) => reader(e)} type="file" id="img" className="hidden" />
           </div>
@@ -588,12 +598,12 @@ export const Layout = () => {
       {
         moreModal ?
         (
-          <div className="bg-white shadow-2xl p-[20px] rounded-[20px] w-[18%] fixed bottom-[170px] left-[20px] flex flex-col gap-3 items-start">
+          <div className="bg-white shadow-2xl p-[20px] rounded-[20px] w-[22%] fixed bottom-[170px] left-[20px] flex flex-col gap-3 items-start">
             <button className=" flex px-[5%] w-[100%] rounded-md bg-[#f2f2f2] hover:bg-[#ccc] text-[20px]  py-[10px] gap-[20px] item-center"> <SettingsIcon/> Setting</button>
             <button className=" flex px-[5%] w-[100%] rounded-md bg-[#f2f2f2] hover:bg-[#ccc] text-[20px]  py-[10px] gap-[20px] item-center">  Your Actions</button>
             <button className=" flex px-[5%] w-[100%] rounded-md bg-[#f2f2f2] hover:bg-[#ccc] text-[20px]  py-[10px] gap-[20px] item-center">  Saved</button>
             <button className=" flex px-[5%] w-[100%] rounded-md bg-[#f2f2f2] hover:bg-[#ccc] text-[20px]  py-[10px] gap-[20px] item-center">  Change theme</button>
-            <button className=" flex px-[5%] w-[100%] rounded-md bg-[#f2f2f2] hover:bg-[#ccc] text-[20px]  py-[10px] gap-[20px] item-center text-red-600" >  Errors</button>
+            <button className=" flex px-[5%] w-[100%] rounded-md bg-[#f2f2f2] hover:bg-[#ccc] text-[18px]  py-[10px] gap-[10px] item-center" onClick={() => {navigation("/basic/security") , setMoreModal(false)}}><ShieldOutlinedIcon/> password and security</button>
             <hr className="border border-[gray] my-[-10px]" />
             <button className="flex px-[5%] w-[100%] rounded-md bg-[#f2f2f2] hover:bg-[#ccc] text-[20px] text-[red] py-[10px]" onClick={() => Logout()}>Log out</button>
           </div>
