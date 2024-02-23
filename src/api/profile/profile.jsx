@@ -25,3 +25,29 @@ export const GetPostByUser = createAsyncThunk(
     }
   }
 );
+export const getFollowings = createAsyncThunk(
+  "profile/getFollowings",
+  async function (id) {
+    try {
+      let { data } = await axiosRequest.get(
+        `FollowingRelationShip/get-subscribers?UserId=${id}`
+      );
+      return data.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+export const getFollowers = createAsyncThunk(
+  "profile/getFollowers",
+  async function (id) {
+    try {
+      let { data } = await axiosRequest.get(
+        `FollowingRelationShip/get-subscriptions?UserId=${id}`
+      );
+      return data.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
