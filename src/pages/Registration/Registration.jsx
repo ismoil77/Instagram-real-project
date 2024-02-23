@@ -30,7 +30,7 @@ const Registration = () => {
           if(data.statusCode == 200)
           {
             saveToken(data.data)
-            navigation("/basic/message/newMessage")
+            navigation("/basic")
           }
         }
         catch(error)
