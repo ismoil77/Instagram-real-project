@@ -197,7 +197,7 @@ const Message = () => {
           </DialogContent>
           <div className="w-[90%] h-[50%] overflow-y-scroll m-auto">
             {search.length == 0 ? (
-              <div>
+              <div className="h-[150px]">
                 <h1>No accounts</h1>
               </div>
             ) : (
@@ -217,7 +217,7 @@ const Message = () => {
                           <img
                             className="w-[40px] h-[40px] rounded-[50%] object-cover"
                             src={`${import.meta.env.VITE_APP_FILES_URL}${
-                              e?.users.avatar
+                              e?.avatar
                             }`}
                             alt={"profile"}
                           />
