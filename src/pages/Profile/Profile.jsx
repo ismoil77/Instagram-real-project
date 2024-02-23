@@ -4,6 +4,7 @@ import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import PersonIcon from "@mui/icons-material/Person";
 import ArticleIcon from "@mui/icons-material/Article";
 import AddIcon from "@mui/icons-material/Add";
+import CloseIcon from "@mui/icons-material/Close";
 import React, { useEffect, useState } from "react";
 
 import Carousel from "../../assets/icons/Carousel.png"
@@ -38,6 +39,30 @@ const styleModal = {
   borderRadius: "10px",
   p: 4,
 };
+
+const styleFollower = {
+  position: "absolute",
+  top: "40%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  borderRadius: "10px",
+  p: 4,
+};
+
+const styleFollowing = {
+  position: "absolute",
+  top: "40%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  borderRadius: "10px",
+  p: 4,
+};
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
@@ -46,7 +71,12 @@ import Box from "@mui/material/Box";
 
 import TurnedInNotIcon from "@mui/icons-material/TurnedInNot";
 
-import { getProfileById, GetPostByUser } from "../../api/profile/profile";
+import {
+  getProfileById,
+  GetPostByUser,
+  getFollowings,
+  getFollowers,
+} from "../../api/profile/profile";
 import { useDispatch, useSelector } from "react-redux";
 
 import { destroyToken, getToken } from "../../utils/token";
@@ -54,13 +84,19 @@ import { Link, useNavigate } from "react-router-dom";
 const Profile = () => {
   const [value, setValue] = useState("1");
 
-  const [editProfile, setEditProfile] = useState(false);
-  const handleOpenEditProfile = () => setEditProfile(true);
-  const handleCloseEditProfile = () => setEditProfile(false);
+  const [search, setSearch] = useState("");
+
+  const [followerProfile, setFollowerProfile] = useState(false);
+  const handleOpenFollowerProfile = () => setFollowerProfile(true);
+  const handleCloseFollowerProfile = () => setFollowerProfile(false);
 
   const [menuProfile, setMenuProfile] = useState(false);
   const handleOpenProfile = () => setMenuProfile(true);
   const handleCloseProfile = () => setMenuProfile(false);
+
+  const [followingProfile, setFollowingProfile] = useState(false);
+  const handleOpenFollowingProfile = () => setFollowingProfile(true);
+  const handleCloseFollowingProfile = () => setFollowingProfile(false);
 
   const [imageProfile, setImageProfile] = useState("");
 
@@ -75,6 +111,9 @@ const Profile = () => {
   const navigate = useNavigate();
   const userProfile = useSelector((store) => store.profile.userProfile);
   const postUser = useSelector((store) => store.profile.postUser);
+  const followingsUser = useSelector((store) => store.profile.followingsUser);
+  const followersUser = useSelector((store) => store.profile.followersUser);
+
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -87,19 +126,22 @@ const Profile = () => {
 
   console.log(userProfile.userName);
   // console.log(postProfile)
+  console.log(followingsUser);
 
   console.log(getToken());
   useEffect(() => {
     dispatch(getProfileById(getToken().sid));
     dispatch(GetPostByUser(getToken().sid));
+    dispatch(getFollowings(getToken().sid));
+    dispatch(getFollowers(getToken().sid));
   }, [dispatch]);
 
   return (
     <div className="p-[60px] pr-[200px] ">
-      <div className="flex justify-between">
+      <div className="flex justify-between items-center">
         <div className="w-[30%]">
           <img
-            className="w-[82%] rounded-full  h-[27vh]"
+            className="w-[79%] rounded-full  h-[27vh]"
             src={
               length == 0
                 ? "https://tse4.mm.bing.net/th?id=OIP.jixXH_Els1MXBRmKFdMQPAHaHa&pid=Api&P=0&h=220"
@@ -129,7 +171,7 @@ const Profile = () => {
             </div>
           </div>
           <div className="flex justify-between w-[70%] p-[0px] items-center mt-[20px] mb-[15px]">
-            <div className="flex w-[32%] hover:border-[1px] hover:bg-[whitesmoke] hover:duration-700 cursor-pointer  text-center p-[5px] rounded-xl">
+            <div className="flex w-[32%]  hover:bg-[whitesmoke] hover:duration-700 cursor-pointer  text-center p-[5px] rounded-xl">
               <h1 className="text-[20px] text-[gray] text-center">
                 <span className="text-[20px] font-[700] text-[black] pr-[5px] pl-[10px]">
                   {userProfile.postCount}
@@ -137,7 +179,10 @@ const Profile = () => {
                 posts
               </h1>
             </div>
-            <div className="w-[32%] flex hover:border-[1px] hover:bg-[whitesmoke] hover:duration-700 cursor-pointer  text-center p-[5px] rounded-xl pl-[10px]">
+            <div
+              onClick={() => handleOpenFollowerProfile()}
+              className="w-[32%] flex  hover:bg-[whitesmoke] hover:duration-700 cursor-pointer  text-center p-[5px] rounded-xl pl-[10px]"
+            >
               <h1 className="text-[20px] text-[gray] text-center ">
                 <span className="text-[20px] font-[700] text-[black] pr-[5px]">
                   {userProfile.subscribersCount}
@@ -145,7 +190,10 @@ const Profile = () => {
                 follower
               </h1>
             </div>
-            <div className="w-[32%] flex hover:border-[1px] hover:bg-[whitesmoke] hover:duration-700 cursor-pointer   text-center p-[5px] rounded-xl pl-[10px]">
+            <div
+              onClick={() => handleOpenFollowingProfile()}
+              className="w-[32%] flex  hover:bg-[whitesmoke] hover:duration-700 cursor-pointer   text-center p-[5px] rounded-xl pl-[10px]"
+            >
               <h1 className="text-[20px] text-[gray]">
                 <span className="text-[20px] font-[700] text-[black] pr-[5px]">
                   {userProfile.subscriptionsCount}
@@ -176,7 +224,7 @@ const Profile = () => {
           <h1 className="text-center text-[18px]">New</h1>
         </div>
       </div>
-      <div className=" m-[auto]">
+      <div className="m-[auto] w-[100%]">
         <TabContext value={value}>
           <Box
             sx={{
@@ -233,16 +281,16 @@ const Profile = () => {
             </TabList>
           </Box>
           <TabPanel sx={{ width: "100%" }} value="1">
-            <div className="flex justify-between items-center flex-wrap gap-[10px]">
+            <div className="flex gap-[0.6%] items-center flex-wrap">
               {postUser?.map((elem) => {
                 return (
                   <div
                     onClick={() => handleOpenModalProfile(elem)}
-                    className="w-[31%] mt-[10px] h-[30vh] bg-[whitesmoke] rounded-xl   "
+                    className="w-[32.8%] mt-[10px] h-[35vh] cursor-pointer bg-[whitesmoke] rounded-lg   "
                   >
                     {elem.images.map((image, index) => (
                       <img
-                        className="w-[100%] h-[100%] rounded-xl"
+                        className="w-[100%] h-[100%] rounded-md object-cover"
                         src={`${import.meta.env.VITE_APP_FILES_URL}/${
                           elem.images[0]
                         }`}
@@ -264,36 +312,39 @@ const Profile = () => {
                   <span className="text-[22px]">+</span> New collection
                 </Button>
               </div>
-              <div className="flex justify-between flex-wrap w-[600px] h-[500px] mt-[10px] overflow-auto">
+              <div className="flex gap-[0.6%] flex-wrap w-[600px] h-[500px] mt-[10px] overflow-auto">
                 {postUser?.map((elem) => {
-                  return (
-                    <div
-                      onClick={() => handleOpenModalProfile(elem)}
-                      className="w-[31%] mt-[10px] h-[30vh] bg-[whitesmoke] rounded-xl hover:w-[32%] hover:h-[31vh] hover:duration-700 "
-                    >
-                      {elem.images.map((image, index) => (
-                        <img
-                          className="w-[100%] h-[80%] rounded-xl"
-                          src={`${import.meta.env.VITE_APP_FILES_URL}/${
-                            elem.images[0]
-                          }`}
-                          alt=""
-                        />
-                      ))}
-                    </div>
-                  );
+                    return (
+                      elem.postFavourite?
+                        <div
+                          onClick={() => handleOpenModalProfile(elem)}
+                          className="w-[32.6%] mt-[0px] h-[23vh] rounded-md"
+                        >
+                          {elem.images.map((image, index) => (
+                            <img
+                              className="w-[100%] h-[100%] rounded-md object-cover"
+                              src={`${import.meta.env.VITE_APP_FILES_URL}/${elem.images[0]
+                                }`}
+                              alt=""
+                            />
+                          ))}
+                        </div> : null
+                    )                  
                 })}
               </div>
             </div>
           </TabPanel>
           <TabPanel sx={{ width: "100%" }} value="3">
-            <div className="flex justify-between items-center flex-wrap">
+            <div className="flex gap-[0.6%] items-center flex-wrap">
               {postUser?.map((elem) => {
                 return (
-                  <div onClick={() => handleOpenModalProfile(elem)} className="w-[31%] h-[30vh] mt-[10px] bg-[whitesmoke] rounded-xl  ">
+                  <div
+                    onClick={() => handleOpenModalProfile(elem)}
+                    className="w-[32.8%] h-[35vh] mt-[10px] bg-[whitesmoke] rounded-md  "
+                  >
                     {elem.images.map((image, index) => (
                       <img
-                        className="w-[100%] h-[100%] rounded-xl"
+                        className="w-[100%] h-[100%] rounded-md object-cover"
                         src={`${import.meta.env.VITE_APP_FILES_URL}/${
                           elem.images[0]
                         }`}
@@ -342,11 +393,11 @@ const Profile = () => {
           </Fade>
         </Modal>
 
-        {/* <Modal
+        <Modal
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"
-          open={editProfile}
-          onClose={handleCloseEditProfile}
+          open={followerProfile}
+          onClose={handleCloseFollowerProfile}
           closeAfterTransition
           slots={{ backdrop: Backdrop }}
           slotProps={{
@@ -355,10 +406,159 @@ const Profile = () => {
             },
           }}
         >
-          <Fade in={editProfile}>
-            <Box sx={style}>wnfnjwnjnj</Box>
+          <Fade in={followerProfile}>
+            <Box sx={styleFollower}>
+              <div className="p-[0px]">
+                <div className="flex justify-between items-center">
+                  <h1 className="text-[19px] font-[500] text-[#424141]">
+                    Followers
+                  </h1>
+                  <IconButton onClick={() => handleCloseFollowerProfile()}>
+                    <CloseIcon />
+                  </IconButton>
+                </div>
+                <div className="mt-[10px]">
+                  <input
+                    onChange={(e) => setSearch(e.target.value)}
+                    value={search}
+                    placeholder="search..."
+                    className="w-[100%] text-[gray] text-[20px] bg-[whitesmoke] h-[50px] rounded-xl outline-none pl-[10px]"
+                    type="search"
+                  />
+                </div>
+                <div>
+                  <div>
+                    {followingsUser
+                      .filter((e) => {
+                        return e.userShortInfo.userName
+                          .toLowerCase()
+                          .trim()
+                          .includes(search);
+                      })
+                      .map((e) => {
+                        console.log(e);
+                        return (
+                          <div className="flex p-[5px] rounded-xl mt-[5px] justify-between items-center bg-[whitesmoke]">
+                            <div className="flex p-[5px] gap-[10px] items-center">
+                              <img
+                                className="w-[45px] h-[45px] rounded-full"
+                                src={
+                                  e.userShortInfo.userPhoto.length !== 0
+                                    ? `${import.meta.env.VITE_APP_FILES_URL}/${
+                                        e.userShortInfo.userPhoto
+                                      }`
+                                    : "https://tse4.mm.bing.net/th?id=OIP.jixXH_Els1MXBRmKFdMQPAHaHa&pid=Api&P=0&h=220"
+                                }
+                                alt=""
+                              />
+                              <div>
+                                <h1 className="font-[600] text-[18px]">
+                                  {e.userShortInfo.userName}
+                                </h1>
+                                <h1 className="font-[500] text-[16px] text-[#4a4848]">
+                                  {e.userShortInfo.fullname}
+                                </h1>
+                              </div>
+                            </div>
+                            <div className="ml-[0px] mr-[10px]">
+                              <button className="text-[18px] hover:bg-[#00d9ff] hover:text-[white] p-[5px] rounded-lg hover:duration-500 text-[blue]">
+                                Follow
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      })}
+                  </div>
+                </div>
+              </div>
+            </Box>
           </Fade>
-        </Modal> */}
+        </Modal>
+
+        <Modal
+          aria-labelledby="transition-modal-title"
+          aria-describedby="transition-modal-description"
+          open={followingProfile}
+          onClose={handleCloseFollowingProfile}
+          closeAfterTransition
+          slots={{ backdrop: Backdrop }}
+          slotProps={{
+            backdrop: {
+              timeout: 500,
+            },
+          }}
+        >
+          <Fade in={followingProfile}>
+            <Box sx={styleFollowing}>
+              <div>
+                <div className="p-[0px]">
+                  <div className="flex justify-between items-center">
+                    <h1 className="text-[19px] font-[500] text-[#424141]">
+                      Following
+                    </h1>
+                    <IconButton onClick={() => handleCloseFollowingProfile()}>
+                      <CloseIcon />
+                    </IconButton>
+                  </div>
+                  <div className="mt-[10px]">
+                    <input
+                      onChange={(e) => setSearch(e.target.value)}
+                      value={search}
+                      placeholder="search..."
+                      className="w-[100%] text-[gray] text-[20px] bg-[whitesmoke] h-[50px] rounded-xl outline-none pl-[10px]"
+                      type="search"
+                    />
+                  </div>
+                  <div>
+                    <div>
+                      {followersUser
+                        .filter((e) => {
+                          return e.userShortInfo.userName
+                            .toLowerCase()
+                            .trim()
+                            .includes(search);
+                        })
+                        .map((e) => {
+                          console.log(e);
+                          return (
+                            <div className="flex p-[5px] rounded-xl mt-[5px] justify-between items-center bg-[whitesmoke]">
+                              <div className="flex p-[5px] gap-[10px] items-center">
+                                <img
+                                  className="w-[45px] h-[45px] rounded-full"
+                                  src={
+                                    e.userShortInfo.userPhoto.length !== 0
+                                      ? `${
+                                          import.meta.env.VITE_APP_FILES_URL
+                                        }/${e.userShortInfo.userPhoto}`
+                                      : "https://tse4.mm.bing.net/th?id=OIP.jixXH_Els1MXBRmKFdMQPAHaHa&pid=Api&P=0&h=220"
+                                  }
+                                  alt=""
+                                />
+                                <div>
+                                  <h1 className="font-[600] text-[18px]">
+                                    {e.userShortInfo.userName}
+                                  </h1>
+                                  <h1 className="font-[500] text-[16px] text-[#4a4848]">
+                                    {e.userShortInfo.fullname}
+                                  </h1>
+                                </div>
+                                
+                              </div>
+                              <div className="ml-[0px] mr-[10px]">
+                                <button className="text-[18px] hover:bg-[#00d9ff] hover:text-[white] p-[5px] rounded-lg hover:duration-500 text-[blue]">
+                                  Follow
+                                </button>
+                              </div>
+                            </div>
+                          );
+                        })}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Box>
+          </Fade>
+        </Modal>
 
         <Modal
           aria-labelledby="transition-modal-title"
