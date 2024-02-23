@@ -109,6 +109,7 @@ dispatch(getTodosByPost12())
 {/* //////user/// */}
 <div className="flex flex-col gap-[30px]">
     
+    
 {
       data.map((el,index)=>{
         // console.log(el.images[0].length);
@@ -117,7 +118,6 @@ dispatch(getTodosByPost12())
         return (
           <div className="">
       <div className=" w-[90%] border-t-[3px] pt-[10px]">
-
 <div className="">
   {/* ////rows */}
   <div className="flex items-center justify-between ">
@@ -172,7 +172,7 @@ dispatch(getTodosByPost12())
   <div className="">
   <button className='w-[30x]'>
     <img className='w-[30px] ' src={el.postFavorite?savActive:sav} onClick={()=>{
-      
+
     }} alt="" />
   </button>
   </div>
