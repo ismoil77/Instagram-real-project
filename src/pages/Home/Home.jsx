@@ -110,6 +110,7 @@ dispatch(getTodosByPost12())
 <div className="flex flex-col gap-[30px]">
     
     
+    
 {
       data.map((el,index)=>{
         // console.log(el.images[0].length);
