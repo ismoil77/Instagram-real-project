@@ -48,10 +48,10 @@ export const App = () => {
           path: "profile",
           element: <Profile />,
         },
-        {
-          path: "",
-          element: <ProfilBy />,
-        },
+        // {
+        //   path: "",
+        //   element: <ProfilBy />,
+        // },
         {
           path: "profile/account/editProfile",
           element: <editProfile />,
