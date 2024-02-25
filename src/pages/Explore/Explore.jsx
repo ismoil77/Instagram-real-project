@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getExplore,
   getPostById,
+  postComment,
   postLike,
 } from "../../api/ExploreApi/ExploreApi";
 import post from "../../assets/icons/Carousel.svg";
@@ -14,10 +15,18 @@ import MapsUgcSharpIcon from "@mui/icons-material/MapsUgcSharp";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import { setComment } from "../../reducers/explore/Explore";
+import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAlt";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+
+import Dialog from "@mui/material/Dialog";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
 
 const style = {
   position: "absolute",
   top: "50%",
+
   left: "50%",
   transform: "translate(-50%, -50%)",
   // width: 400,
@@ -38,8 +47,7 @@ const Explore = () => {
   useEffect(() => {
     dispatch(getExplore());
   }, [dispatch]);
-
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const [idx, setIdx] = useState();
 
   const handleOpen = () => {
@@ -47,10 +55,45 @@ const Explore = () => {
     dispatch(getPostById(idx));
   };
 
+  const formatDate = (datePublished) => {
+    const date = new Date(datePublished);
+    const day = date.getDate();
+    const month = date.toLocaleString("default", { month: "long" });
+    const year = date.getFullYear();
+    return `${day} ${month} ${year}`;
+  };
+
+  const formattedDate = formatDate(Byid?.datePublished);
+
   const handleClose = () => setOpen(false);
 
+  const [isSaved, setSaved] = useState(false);
+
+  const handleBookmarkClick = () => {
+    setSaved((prevSaved) => !prevSaved);
+  };
+
+  const [openDialog, setOpenDialog] = React.useState(false);
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+
+  const handleClickOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
+  const [isFollowing, setFollowing] = useState(false);
+
+  const handleButtonClick = () => {
+    // Toggle the value of isFollowing
+    setFollowing((prevFollowing) => !prevFollowing);
+  };
+
   return (
-    <div className="w-[85%] m-auto">
+    <div className="w-[88%] m-auto">
       <div className="grid grid-cols-3 gap-[5px] mt-[30px] ">
         {data.map((el, i) => {
           return (
@@ -122,11 +165,11 @@ const Explore = () => {
       >
         <Box sx={style}>
           <div className="flex">
-            <div className="w-[600px] h-[500px] border-solid border-[1px] border-gray-200 bg-black ">
+            <div className="w-[600px] h-[600px] border-solid border-[1px]  border-gray-200 bg-black ">
               {Byid?.images?.map((el) => {
                 return (
                   <img
-                    className="h-[100%] w-[100%]  object-cover"
+                    className="h-[100%] w-[100%] text-center object-cover"
                     src={`${imgUrl}${el}`}
                     alt=""
                   />
@@ -136,33 +179,109 @@ const Explore = () => {
             <div>
               <nav className="flex justify-between  h-[60px] w-[450px] border-solid border-[1px] border-gray-200 items-center px-[2%]">
                 <div className="flex items-center gap-[5px]">
-                  <h1 className="text-[20px] text-[#262626]">
-                    {Byid?.title} <span>•</span>
-                  </h1>
-                  <h1 className="text-[#0095f6] text-[20px]">follow</h1>
+                  <div>
+                    <img
+                      className="w-[40px] h-[40px]"
+                      src={
+                        length == 0
+                          ? "https://tse4.mm.bing.net/th?id=OIP.jixXH_Els1MXBRmKFdMQPAHaHa&pid=Api&P=0&h=220"
+                          : Byid?.images
+                      }
+                      alt=""
+                    />
+                  </div>
+                  <div className="flex flex-col gap-[1px]">
+                    <div className="flex items-center gap-[5px]">
+                      <h1 className="text-[15px] font-[600] text-[#262626] hover:opacity-50 cursor-pointer">
+                        {Byid?.title}
+                      </h1>
+                      <h1>•</h1>
+                      <h1
+                        onClick={handleButtonClick}
+                        className="text-[#0095f6] cursor-pointer text-[15px] hover:text-[#1f4158]"
+                      >
+                        {isFollowing ? "Unfollow" : "Follow"}
+                      </h1>
+                    </div>
+                    <div>
+                      <h1 className="text-[#000000] font-[200] text-[13px]">
+                        {/* {Byid?.content} */}
+                      </h1>
+                    </div>
+                  </div>
                 </div>
-                <MoreHorizIcon />
+                <MoreHorizIcon
+                  className="hover:opacity-50 cursor-pointer"
+                  onClick={() => handleClickOpenDialog()}
+                />
               </nav>
-              <div className="h-[300px] overflow-auto p-[3%]">
+              <div className="h-[380px] flex flex-col gap-[20px] overflow-auto p-[3%]">
                 {Byid?.comments?.map((el) => {
-                  return <h1 className="w-[300px]">{el?.comment}</h1>;
+                  return (
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center gap-[10px]">
+                        <img
+                          className="w-[30px] h-[30px]"
+                          src={
+                            length == 0
+                              ? "https://tse4.mm.bing.net/th?id=OIP.jixXH_Els1MXBRmKFdMQPAHaHa&pid=Api&P=0&h=220"
+                              : Byid?.images
+                          }
+                          alt=""
+                        />
+                        <div>
+                          <div className="flex gap-[5px]">
+                            <h1 className="font-[600] text-[15px] hover:opacity-50">
+                              {Byid?.title}
+                            </h1>
+                            <h1 className="w-[200px] font-[300]">
+                              {el?.comment}
+                            </h1>
+                          </div>
+                          <div>
+                            <MoreHorizIcon
+                              sx={{ fontSize: "15px" }}
+                              className="hover:opacity-50 cursor-pointer"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        {/* <FavoriteIcon
+                          color="error"
+                          sx={{ fontSize: "15px" }}
+                        ></FavoriteIcon> */}
+                        <FavoriteBorderIcon
+                          className="hover:opacity-50"
+                          sx={{ cursor: "pointer", fontSize: "15px" }}
+                        ></FavoriteBorderIcon>
+                      </div>
+                    </div>
+                  );
                 })}
               </div>
 
-              <footer className="border-t-[1px] ">
-                <div className="flex mt-[8px] justify-between items-center">
+              <footer className="border-t-[1px]">
+                <div className="flex mt-[10px] justify-between items-center">
                   <div className="flex items-center pl-[16px] gap-[10px]">
                     {Byid?.postLike ? (
                       <FavoriteIcon
+                        className="hover:opacity-50"
                         color="error"
-                        onClick={() => dispatch(postLike(Byid?.postId))}
+                        sx={{ cursor: "pointer" }}
+                        onClick={() => {
+                          dispatch(postLike(Byid?.postId));
+                        }}
                       ></FavoriteIcon>
                     ) : (
                       <FavoriteBorderIcon
+                        className="hover:opacity-50"
+                        sx={{ cursor: "pointer" }}
                         onClick={() => dispatch(postLike(Byid?.postId))}
                       ></FavoriteBorderIcon>
                     )}
                     <svg
+                      className="hover:opacity-50 cursor-pointer"
                       aria-label="Комментировать"
                       class="x1lliihq x1n2onr6 x5n08af"
                       fill="currentColor"
@@ -181,6 +300,7 @@ const Explore = () => {
                       ></path>
                     </svg>
                     <svg
+                      className="hover:opacity-50 cursor-pointer"
                       aria-label="Поделиться публикацией"
                       class="x1lliihq x1n2onr6 x5n08af"
                       fill="currentColor"
@@ -210,19 +330,104 @@ const Explore = () => {
                     </svg>
                   </div>
                   <div className="pr-[16px]">
-                  <BookmarkBorderIcon
-                    style={{
-                      cursor: "pointer",
-                      // color: isSaved ? "blue" : "black",
-                    }}
-                  />
+                    {/* {isSaved ? (
+                      <BookmarkIcon
+                        className="hover:opacity-50"
+                        onClick={() => handleBookmarkClick()}
+                        style={{
+                          cursor: "pointer",
+                          color: "black",
+                        }}
+                      />
+                    ) : (
+                      <BookmarkBorderIcon
+                        className="hover:opacity-50"
+                        style={{
+                          cursor: "pointer",
+                        }}
+                      />
+                    )} */}
+                    <BookmarkIcon
+                      onClick={handleBookmarkClick}
+                      style={{
+                        cursor: "pointer",
+                        color: isSaved ? "black" : "blue",
+                      }}
+                    />
                   </div>
+                </div>
+                <div className="py-[10px]">
+                  <h1 className="pl-[16px] text-[#000000] font-[700] text-[17px]">
+                    {Byid?.postLikeCount} <span>likes</span>
+                  </h1>
+                  <h1 className="pl-[16px] text-[#737373] font-[300] text-[12px]">
+                    {formattedDate}
+                  </h1>
+                  <p></p>
+                </div>
+                <div className="flex gap-2 py-[10px] items-center border-t pl-[16px]">
+                  <SentimentSatisfiedAltIcon className="hover:opacity-50" />
+                  <input
+                    onChange={(e) => dispatch(setComment(e.target.value))}
+                    className="w-[330px] outline-none h-[40px]"
+                    type="text"
+                    value={comments}
+                    placeholder="Add Comments..."
+                  />
+                  <button
+                    onClick={() => {
+                      dispatch(
+                        postComment({
+                          comment: comments,
+                          postId: Byid?.postId,
+                        })
+                      );
+                      dispatch(setComment(""));
+                    }}
+                    className="text-blue-600 text-[17px] font-[700]"
+                  >
+                    Post
+                  </button>
                 </div>
               </footer>
             </div>
           </div>
         </Box>
       </Modal>
+
+      <Dialog
+        fullScreen={fullScreen}
+        open={openDialog}
+        onClose={handleCloseDialog}
+        aria-labelledby="responsive-dialog-title"
+      >
+        <div className="flex w-[400px]  text-center flex-col">
+          <div className="py-[15px] cursor-pointer">
+            <h1 className="text-[#ed4956] font-[600]">Сomplain</h1>
+          </div>
+          <div className="py-[15px] cursor-pointer border-t">
+            <h1 className="text-[#000000]">Go to publication</h1>
+          </div>
+          <div className="py-[15px] cursor-pointer border-t">
+            <h1 className="text-[#000000]">Share...</h1>
+          </div>
+          <div className="py-[15px] cursor-pointer border-t">
+            <h1 className="text-[#000000]">Copy link</h1>
+          </div>
+          <div className="py-[15px] cursor-pointer border-t">
+            <h1 className="text-[#000000]">Embed on the site</h1>
+          </div>
+          <div className="py-[15px] cursor-pointer border-t">
+            <h1 className="text-[#000000]">About the account</h1>
+          </div>
+          <div
+            onClick={handleCloseDialog}
+            className="py-[15px] cursor-pointer border-t"
+          >
+            <h1 className="text-[#000000]">Сancel</h1>
+          </div>
+        </div>
+      </Dialog>
     </div>
   );
 };

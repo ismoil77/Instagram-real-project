@@ -48,8 +48,7 @@ const Security = () => {
 
   if(!localStorage.getItem("access_token"))
   {
-    useEffect(() =>
-    {
+    useEffect(() => {
       navigate("/")
     } , [])
   }
