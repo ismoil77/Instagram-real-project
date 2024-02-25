@@ -46,7 +46,16 @@ const Security = () => {
   )
 
 
-  
+
+  if(!localStorage.getItem("access_token"))
+  {
+    useEffect(() => {
+      navigate("/")
+    } , [])
+  }
+  else
+  {
+
     return (
       <div className="p-[20px_50px] flex flex-col gap-7 bg-[#f2f2f2] min-h-screen">
         <p className="text-[40px] font-bold">Password and Security</p>
