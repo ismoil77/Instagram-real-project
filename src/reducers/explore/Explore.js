@@ -3,6 +3,7 @@ import {
   getExplore,
   getExploreReels,
   getPostById,
+  postLike,
 } from "../../api/ExploreApi/ExploreApi";
 
 export const Explore = createSlice({
@@ -11,7 +12,8 @@ export const Explore = createSlice({
     data: [],
     Comments: "",
     ById: [],
-    like: [],
+    postLike: [],
+    loading: false,
   },
   reducers: {
     setComment: (state, action) => {
@@ -20,13 +22,13 @@ export const Explore = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(getExplore.pending, (state, action) => {
-      console.log(1);
+      state.loading = true;
     });
     builder.addCase(getExplore.fulfilled, (state, action) => {
       state.data = action.payload;
     });
     builder.addCase(getExplore.rejected, (state, action) => {
-      console.log(3);
+      state.loading.false;
     });
     builder.addCase(getExploreReels.fulfilled, (state, action) => {
       state.data = action.payload;
@@ -36,6 +38,6 @@ export const Explore = createSlice({
     });
   },
 });
-export const {} = Explore.actions;
+export const { setComment } = Explore.actions;
 
 export default Explore.reducer;

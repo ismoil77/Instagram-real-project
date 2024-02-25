@@ -2,7 +2,6 @@
   font-weight: 700;
 }
 
-
 .searchModal {
   box-shadow: 1px 1px 8px gray;
   border-top-right-radius: 16px;
@@ -56,19 +55,22 @@
   cursor: pointer;
 }
 
-.searchMod{
+.searchMod {
   position: fixed;
   background-color: white;
   width: 30.5%;
   height: 100vh;
   margin-left: 6%;
   border-right: 1px solid rgb(225, 225, 225);
-  border-radius: 0 20px 20px 0 ;
+  border-radius: 0 20px 20px 0;
   z-index: 999;
   box-shadow: 7px 0px 10px rgb(153, 153, 153);
-  
-}
 
+}
+::-webkit-scrollbar{
+  display: none;
+
+}
 
 #app {
   height: 100%;
@@ -89,9 +91,8 @@ body {
 }
 
 .swiper {
-  width: 90%;
-  height: 30svh;
-  margin: 20px auto;
+  width: 100%;
+  height: 70svh;
 }
 
 .swiper-slide {
@@ -99,10 +100,10 @@ body {
   font-size: 18px;
   background: #fff;
 
-  /* Center slide text vertically */
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 0;
 }
 
 .swiper-slide img {
@@ -112,38 +113,28 @@ body {
   object-fit: cover;
 }
 
-
-.open
-{
-    transition: all 0.3s linear;
-    animation: right 1s;
+.open {
+  transition: all 0.3s linear;
+  animation: right 1s;
 }
-@keyframes right
-{
-    from
-    {
-        transform: translateX(100%);
-    }
-    to
-    {
-        transform: translateX(0);
-    }
+@keyframes right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }
 
-.close
-{
-    transition: all 0.3s linear;
-    animation: left 1s;
+.close {
+  transition: all 0.3s linear;
+  animation: left 1s;
 }
-@keyframes left
-{
-    from
-    {
-        transform: translateX(0);
-    }
-    to
-    {
-        transform: translateX(100%);
-    }
+@keyframes left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
 }
-

@@ -13,7 +13,7 @@ export const getExplore = createAsyncThunk("explore/getExplore", async () => {
 let idx = null;
 export const getPostById = createAsyncThunk(
   "explore/getPostById",
-  async function (id) {
+  async (id) => {
     try {
       let { data } = await axiosRequest.get(`Post/get-post-by-id?id=${id}`);
       // console.log(data.data);
@@ -38,10 +38,11 @@ export const getExploreReels = createAsyncThunk(
 );
 
 export const postComment = createAsyncThunk(
-  "reels/postComment",
-  async function (newComment, { dispatch }) {
+  "explore/postComment",
+  async (newComment, { dispatch }) => {
     try {
       const { data } = await axiosRequest.post("Post/add-comment", {
+        // dateAdd: new Date().toLocaleString(),
         comment: newComment.comment,
         postId: newComment.postId,
       });
@@ -53,13 +54,25 @@ export const postComment = createAsyncThunk(
 );
 
 export const postLike = createAsyncThunk(
-  "exploere/postLike",
-  async function (id, { dispatch }) {
+  "explore/postLike",
+  async (id, { dispatch }) => {
     try {
       const { data } = await axiosRequest.post(`Post/like-post?postId=${id}`);
-      dispatch(getPostById());
+      dispatch(getPostById(idx));
     } catch (error) {
       console.error(error);
     }
   }
 );
+
+
+// export const getById = createAsyncThunk("explore/getById", async (id) => {
+//   try {
+//     let { data } = await axiosRequest.get(
+//       `UserProfile/get-user-profile-by-id?id=${id}`
+//     );
+//     return data.data;
+//   } catch (error) {
+//     console.error(error);
+//   }
+// });
