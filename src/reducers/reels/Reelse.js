@@ -1,27 +1,33 @@
-
-import { createSlice } from '@reduxjs/toolkit'
-import { getComment } from '../../api/reels/Reels';
-
-
+import { createSlice } from "@reduxjs/toolkit";
+import { getComment, getLike } from "../../api/reels/Reels";
 
 export const videoReels = createSlice({
-  name: 'reels',
+  name: "reels",
   initialState: {
     cnt: 0,
-    data:[],
-   
+    data: [],
+    user: [],
+    setComment: "",
   },
   reducers: {
+    setComment: (state, action) => {
+      state.setComment = action.payload;
+    },
   },
-  extraReducers:(builder)=>{
-  
-    builder.addCase(getComment.fulfilled,(state,action)=>{
-      state.data=action.payload
-    })
+  extraReducers: (builder) => {
+    builder.addCase(getComment.fulfilled, (state, action) => {
+      state.data = action.payload;
+    });
+    builder.addCase(getLike.fulfilled, (state,action)=>{
+      state.user=action.payload
+
+      
    
-  }
-})
+      })
+  },
+});
 
-export const {} = videoReels.actions
 
-export default videoReels.reducer
+export const { setComment } = videoReels.actions;
+
+export default videoReels.reducer;
