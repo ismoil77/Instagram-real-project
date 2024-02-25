@@ -1,10 +1,11 @@
-import { getProfileById,GetPostByUser, getFollowings, getFollowers } from "../../api/profile/profile";
+import { getProfileById,GetPostByUser, getFollowings, getFollowers, putProfile } from "../../api/profile/profile";
 import { createSlice } from "@reduxjs/toolkit";
 
  export const profile = createSlice({
    name: "profile",
    initialState: {
      userProfile: [],
+     editUserById:{},
      postUser: [],
      followingsUser: [],
      followersUser: [],
@@ -30,9 +31,10 @@ import { createSlice } from "@reduxjs/toolkit";
      builder.addCase(getFollowers.fulfilled, (state, action) => {
          state.followersUser = action.payload;
          state.isLoading = false;
-    });
+     });
+    //  builder.addCase(putProfile.fulfilled, (state, action) => {
+    //    console.log(action.payload);
+    //  });
    },
  });
-
-// export const { userProfile, postUser } = profile.;
 export default profile.reducer;
