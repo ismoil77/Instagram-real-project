@@ -23,20 +23,18 @@ import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
 import InsertPhotoOutlinedIcon from "@mui/icons-material/InsertPhotoOutlined";
 import SendIcon from "@mui/icons-material/Send";
 import { getToken } from "../../utils/token";
-import "../../App.css"
+import "../../App.css";
 import { styled } from "@mui/material/styles";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
-import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import SettingsBackupRestoreIcon from "@mui/icons-material/SettingsBackupRestore";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-
-
 
 import { axiosRequest } from "../../utils/axiosRequest";
 import { useDispatch, useSelector } from "react-redux";
@@ -53,7 +51,6 @@ import {
 import { setUserMessage } from "../../reducers/Message/Message";
 import { useNavigate } from "react-router";
 
-
 const style1 = {
   position: "absolute",
   top: "50%",
@@ -61,10 +58,10 @@ const style1 = {
   transform: "translate(-50%, -50%)",
   width: 250,
   bgcolor: "background.paper",
-  borderRadius:"5px",
+  borderRadius: "5px",
   boxShadow: 24,
   p: 4,
-  border:"none"
+  border: "none",
 };
 
 const IOSSwitch = styled((props) => (
@@ -123,7 +120,6 @@ const Message = () => {
   const message = useSelector((state) => state.message);
   const byid = useSelector((state) => state.message.byid);
   const chatmessage = useSelector((state) => state.message.chatMessage);
-  
 
   const style = {
     position: "absolute",
@@ -142,7 +138,6 @@ const Message = () => {
   const handleOpen2 = () => setOpen2(true);
   const handleClose2 = () => {
     setOpen2(false);
-   
   };
 
   const dispatch = useDispatch();
@@ -154,22 +149,21 @@ const Message = () => {
   // const [user1, setUser1] = useState([]);
   const [chat, setchat] = useState([]);
   const [open, setOpen] = React.useState(false);
-  const [idx, setidx] = useState(null)
+  const [idx, setidx] = useState(null);
   const [chatContent, setChatContent] = useState(false);
-  const [idx1, setidx1] = useState(null)
-  const [message1, setMessage1] = useState("")
-  const [chatIdx, setChatIdx] = useState(null)
-  const [chatIdx1, setChatIdx1] = useState(null)
-  const [chatIdx2, setChatIdx2] = useState(null)
+  const [idx1, setidx1] = useState(null);
+  const [message1, setMessage1] = useState("");
+  const [chatIdx, setChatIdx] = useState(null);
+  const [chatIdx1, setChatIdx1] = useState(null);
+  const [chatIdx2, setChatIdx2] = useState(null);
 
   // const userProfile = useSelector((store) => store.profile.userProfile);
 
-  
-  const [messageidx, setMessageidx] = useState(null)
-  const [emoji, setEmoji] = useState(false)
-  const [open1, setOpen1] = useState(false)
-  const handleOpen1 = () => setOpen1(true)
-  const handleClose1 = () => setOpen1(false)
+  const [messageidx, setMessageidx] = useState(null);
+  const [emoji, setEmoji] = useState(false);
+  const [open1, setOpen1] = useState(false);
+  const handleOpen1 = () => setOpen1(true);
+  const handleClose1 = () => setOpen1(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -193,8 +187,6 @@ const Message = () => {
   useEffect(() => {
     dispatch(getMessage());
   }, []);
-
-
 
   // console.log(user1);
 
@@ -231,7 +223,7 @@ const Message = () => {
   // }
 
   async function sendMessage(e) {
-    e.preventDefault()
+    e.preventDefault();
     if (message1.trim().length > 0) {
       try {
         console.log(chatIdx);
@@ -331,7 +323,7 @@ const Message = () => {
               </div>
             )}
           </div>
-        
+
           <DialogActions>
             <Button
               variant="contained"
@@ -349,10 +341,7 @@ const Message = () => {
       <div className="flex justify-between ">
         <div className="w-[30%] pt-[27px] ">
           <div className="flex w-[90%] m-auto justify-between items-center">
-
-            <h1 className="text-[22px] font-[700]">{userProfile?.userName}</h1>
-
-         
+            {/* <h1 className="text-[22px] font-[700]">{userProfile?.userName}</h1> */}
 
             <EditNoteIcon
               onClick={handleClickOpen}
@@ -380,7 +369,7 @@ const Message = () => {
                         setChatContent(true),
                         dispatch(getById(e.receiveUser.userId)),
                         dispatch(getMessage(e.chatId));
-                        setChatIdx2(e.chatId)
+                      setChatIdx2(e.chatId);
                     }}
                     className="flex items-center mt-[5%] hover:bg-[#EFF6FF] rounded-[5px] p-[5px]"
                   >
@@ -389,7 +378,7 @@ const Message = () => {
                     e.receiveUser.userPhoto == "" ? (
                       <img
                         className="w-[50px] h-[50px] rounded-[50%] object-cover"
-                        src={imageee}  
+                        src={imageee}
                         alt={"profile"}
                       />
                     ) : (
@@ -463,64 +452,66 @@ const Message = () => {
                     </div>
                   </div>
                   <div className="w-[15%] flex justify-between items-center">
-                    <CallIcon onClick={()=> setCall(true)} />
-                    <VideocamOutlinedIcon onClick={()=> setCall(true)} />
+                    <CallIcon onClick={() => setCall(true)} />
+                    <VideocamOutlinedIcon onClick={() => setCall(true)} />
                     <InfoOutlinedIcon onClick={() => setmodal(true)} />
                   </div>
                 </div>
               </div>
             </div>
 
-            <div onClick={() => setmodal(close)} className="h-[77vh] overflow-y-scroll ">
+            <div
+              onClick={() => setmodal(close)}
+              className="h-[77vh] overflow-y-scroll "
+            >
               <div className="">
-                  {chatmessage?.map((e) => {
-                    if(e.userId == getToken().sid){
-                      return (
-                        <div className="w-[100%] flex text-start justify-end items-center">
-                          <div className="">
-                            <h1
-                              onClick={()=> {handleOpen1(),setMessageidx(e.messageId),setChatIdx1(e.chatId)}}
-                              className="card1 font-[700] text-[#A7B1BE] mt-[5px] pr-[5px] rounded-[50px] text-[20px] "
-                            >
-                              ...
-                            </h1>
-                          </div>
-                          <div
-                            className="card bg-blue-500 text-end flex flex-wrap p-[8px] font-[600] mr-[1%] rounded-[10px_10px_0px_10px] gap-2 text-[16px] text-[white] mt-[2%]"
-                           
+                {chatmessage?.map((e) => {
+                  if (e.userId == getToken().sid) {
+                    return (
+                      <div className="w-[100%] flex text-start justify-end items-center">
+                        <div className="">
+                          <h1
+                            onClick={() => {
+                              handleOpen1(),
+                                setMessageidx(e.messageId),
+                                setChatIdx1(e.chatId);
+                            }}
+                            className="card1 font-[700] text-[#A7B1BE] mt-[5px] pr-[5px] rounded-[50px] text-[20px] "
                           >
-                            {e.messageText}
-                          </div>
-                          {/* <h1>{e.sendMassageDate}</h1> */}
+                            ...
+                          </h1>
                         </div>
-                      ); 
-                    }
-                    else{
-                      return (
-                        <div className="w-[100%] flex text-start items-center ">
-                          
-                          <div
-                            className="card bg-[#F8FAFC] ml-[1%] text-end flex flex-wrap p-[8px] font-[600] rounded-[0px_10px_10px_10px] gap-2 text-[16px] text-[#475569] mt-[2%]"
-                           
+                        <div className="card bg-blue-500 text-end flex flex-wrap p-[8px] font-[600] mr-[1%] rounded-[10px_10px_0px_10px] gap-2 text-[16px] text-[white] mt-[2%]">
+                          {e.messageText}
+                        </div>
+                        {/* <h1>{e.sendMassageDate}</h1> */}
+                      </div>
+                    );
+                  } else {
+                    return (
+                      <div className="w-[100%] flex text-start items-center ">
+                        <div className="card bg-[#F8FAFC] ml-[1%] text-end flex flex-wrap p-[8px] font-[600] rounded-[0px_10px_10px_10px] gap-2 text-[16px] text-[#475569] mt-[2%]">
+                          {e.messageText}
+                        </div>
+                        <div className="ml-[1%]">
+                          <h1
+                            onClick={() => {
+                              handleOpen1(),
+                                setMessageidx(e.messageId),
+                                setChatIdx1(e.chatId);
+                            }}
+                            className="card1 font-[700] text-[#A7B1BE] mt-[5px] pr-[5px] rounded-[50px] text-[20px] "
                           >
-                            {e.messageText}
-                          </div>
-                          <div className="ml-[1%]">
-                            <h1
-                              onClick={()=> {handleOpen1(),setMessageidx(e.messageId),setChatIdx1(e.chatId)}}
-                              className="card1 font-[700] text-[#A7B1BE] mt-[5px] pr-[5px] rounded-[50px] text-[20px] "
-                            >
-                              ...
-                            </h1>
-                          </div>
-                          {/* <h1>{e.sendMassageDate}</h1> */}
+                            ...
+                          </h1>
                         </div>
-                      )
-                    }
-                  })}
-                  
-                </div>
-                {/* // <div className="">
+                        {/* <h1>{e.sendMassageDate}</h1> */}
+                      </div>
+                    );
+                  }
+                })}
+              </div>
+              {/* // <div className="">
                 //   {chatmessage?.map((e) => {
                 //     return (
                 //       <div className="w-[100%] flex text-end items-center">
@@ -544,7 +535,7 @@ const Message = () => {
                 //     );
                 //   })}
                 // </div> */}
-                </div>
+            </div>
 
             <div className="">
               <Modal
@@ -554,39 +545,53 @@ const Message = () => {
                 aria-describedby="modal-modal-description"
               >
                 <Box sx={style1}>
-                 <p className="text-[#A7B1BE] text-[14px]">6:25 AM</p>
-                <div className="w-[100%]">
-                <p
-                  
-                    className="  flex text-[18px] mt-[4%] pt-[5px] border-t"
-                  >
-                    Send Message<p> <SendIcon
-                sx={{ paddingLeft: 1, fontSize: 30 }}
-              /></p>
-                  </p>
-                <p
-                  
-                    className="  flex text-[18px] mt-[4%] pt-[5px]"
-                  >
-                    Copy <p><ContentCopyIcon  sx={{marginLeft:1}}/></p>
-                  </p>
-                </div>
-                <div className="w-[100%]">
-                <p
-                    onClick={() => {dispatch(deleteMessage({id:messageidx,chatId:chatIdx1})),handleClose1(false),console.log(chatIdx1)}}
-                    className="text-red-500  flex text-[18px] mt-[4%] pt-[5px] border-t"
-                  >
-                    Cancel message <p><SettingsBackupRestoreIcon sx={{marginLeft:1}} color="red"/></p>
-                  </p>
-                </div>
+                  <p className="text-[#A7B1BE] text-[14px]">6:25 AM</p>
+                  <div className="w-[100%]">
+                    <p className="  flex text-[18px] mt-[4%] pt-[5px] border-t">
+                      Send Message
+                      <p>
+                        {" "}
+                        <SendIcon sx={{ paddingLeft: 1, fontSize: 30 }} />
+                      </p>
+                    </p>
+                    <p className="  flex text-[18px] mt-[4%] pt-[5px]">
+                      Copy{" "}
+                      <p>
+                        <ContentCopyIcon sx={{ marginLeft: 1 }} />
+                      </p>
+                    </p>
+                  </div>
+                  <div className="w-[100%]">
+                    <p
+                      onClick={() => {
+                        dispatch(
+                          deleteMessage({ id: messageidx, chatId: chatIdx1 })
+                        ),
+                          handleClose1(false),
+                          console.log(chatIdx1);
+                      }}
+                      className="text-red-500  flex text-[18px] mt-[4%] pt-[5px] border-t"
+                    >
+                      Cancel message{" "}
+                      <p>
+                        <SettingsBackupRestoreIcon
+                          sx={{ marginLeft: 1 }}
+                          color="red"
+                        />
+                      </p>
+                    </p>
+                  </div>
                 </Box>
               </Modal>
             </div>
 
-            <form onSubmit={sendMessage} className="w-[98%] mt-[1%] flex items-center m-auto h-[45px] border  rounded-[10px]">
+            <form
+              onSubmit={sendMessage}
+              className="w-[98%] mt-[1%] flex items-center m-auto h-[45px] border  rounded-[10px]"
+            >
               <SentimentSatisfiedAltOutlinedIcon
                 sx={{ paddingLeft: 1, fontSize: 35 }}
-                onClick={()=> setEmoji(true)}
+                onClick={() => setEmoji(true)}
               />
               <input
                 type="text"
@@ -595,28 +600,30 @@ const Message = () => {
                 onChange={(event) => setMessage1(event.target.value)}
                 placeholder="Write a message..."
               />
-              
-              
-                {
-                  message1.trim().length>0? <div className="">
-                 
-              <button type="submit" onClick={()=> sendMessage()} className="text-[#15bdff] flex items-center ml-[-15%] font-mono font-[700]">Opublikovat <SendIcon 
-             
-              sx={{ paddingLeft: 1, fontSize: 30 }}/></button>
-              </div>: <div className="ml-[3%]">
-              <MicNoneOutlinedIcon sx={{fontSize:27}} />
-              <InsertPhotoOutlinedIcon sx={{ paddingLeft: 1, fontSize: 35 }} />
-           
-              </div>
-             
-                }
-               
+
+              {message1.trim().length > 0 ? (
+                <div className="">
+                  <button
+                    type="submit"
+                    onClick={() => sendMessage()}
+                    className="text-[#15bdff] flex items-center ml-[-15%] font-mono font-[700]"
+                  >
+                    Opublikovat{" "}
+                    <SendIcon sx={{ paddingLeft: 1, fontSize: 30 }} />
+                  </button>
+                </div>
+              ) : (
+                <div className="ml-[3%]">
+                  <MicNoneOutlinedIcon sx={{ fontSize: 27 }} />
+                  <InsertPhotoOutlinedIcon
+                    sx={{ paddingLeft: 1, fontSize: 35 }}
+                  />
+                </div>
+              )}
             </form>
           </div>
         )}
       </div>
-
-
 
       <Modal
         open={open2}
@@ -635,7 +642,11 @@ const Message = () => {
           </div>
           <button
             onClick={() => {
-              {setChatContent(false),handleClose2(),dispatch(deleteChat(idx1))}
+              {
+                setChatContent(false),
+                  handleClose2(),
+                  dispatch(deleteChat(idx1));
+              }
             }}
             className="py-[13px] border-t border-[#cecece] text-red-500 font-[600]"
           >
@@ -710,11 +721,7 @@ const Message = () => {
                 <button
                   className="text-red-500  block text-[20px] mt-[5%]"
                   onClick={() => {
-                    
-                      
-                      setmodal(false),
-                      handleOpen2()
-
+                    setmodal(false), handleOpen2();
                   }}
                 >
                   Delete Chat
@@ -725,60 +732,67 @@ const Message = () => {
         </div>
       ) : null}
 
-      {
-        emoji?
+      {emoji ? (
         <div className="absolute top-1 bg-[green]">
           <img src="&#128512" alt="" />
           <h1></h1>
-        </div>:null
-      }
-      {
-        call?
+        </div>
+      ) : null}
+      {call ? (
         <div className="w-[100%] h-[100%] bg-gray-900 absolute top-0 left-[-0%]">
-           <div className=" mt-[1%] text-center w-[100%]">
-           <div className="flex w-[90%] m-auto mb-[3%] justify-between items-center">
-           <img className="w-[3%]" src="https://cdn2.iconfinder.com/data/icons/music-player-icons-filled/46/Drop_Down-1024.png" alt="" />
-            <img onClick={()=> setCall(false)} className="w-[70px] h-[70px] rounded-[50%]" src="https://e7.pngegg.com/pngimages/455/885/png-clipart-telephone-call-computer-icons-iphone-iphone-electronics-text.png" alt="" />
-           </div>
-           <audio autoPlay src={calling}></audio>
-           {message.userMessage?.image == null ||
-                    message.userMessage?.image == "" ? (
-                      <img
-                        className="w-[130px] rounded-[50%] ml-[44.5%] mb-[2%] h-[130px] object-cover"
-                        src={imageee}
-                        alt={"profile"}
-                      />
-                    ) : (
-                      <img
-                        className="w-[130px] rounded-[50%] ml-[44.5%] mb-[2%] h-[130px] object-cover"
-                        src={`${import.meta.env.VITE_APP_FILES_URL}${
-                          message.userMessage?.image
-                        }`}
-                        alt={"profile"}
-                      />
-                    )}
-                     <h1 className="text-[20px] text-white font-[900] mb-[1.5%]">
-                        {message.userMessage?.fullName} 
-                      </h1>
-                     <h1 className="text-[16px] text-white  font-[600]">
-                        Connecting....
-                      </h1>
-
-           </div>
-           <div className="mt-[4%]"> 
-          
-            <img className="w-[60%] m-auto h-[60px] " src="https://bogatyr.club/uploads/posts/2023-03/1678895524_bogatyr-club-p-radiovolni-fon-foni-pinterest-46.png" alt="" />
-           </div>
-           <div className="flex items-center w-[60%] mt-[4%] m-auto justify-between">
-           <VideocamOutlinedIcon sx={{color:"white",fontSize:"60px"}} />
-           <MicNoneOutlinedIcon  sx={{color:"white",fontSize:"60px"}} />
-          <img className="w-[100px]" src={img2} alt="" />
-          <img className="w-[100px]" src={img3} alt="" />
-           </div>
-           
-        </div>:null
-      }
-      
+          <div className=" mt-[1%] text-center w-[100%]">
+            <div className="flex w-[90%] m-auto mb-[3%] justify-between items-center">
+              <img
+                className="w-[3%]"
+                src="https://cdn2.iconfinder.com/data/icons/music-player-icons-filled/46/Drop_Down-1024.png"
+                alt=""
+              />
+              <img
+                onClick={() => setCall(false)}
+                className="w-[70px] h-[70px] rounded-[50%]"
+                src="https://e7.pngegg.com/pngimages/455/885/png-clipart-telephone-call-computer-icons-iphone-iphone-electronics-text.png"
+                alt=""
+              />
+            </div>
+            <audio autoPlay src={calling}></audio>
+            {message.userMessage?.image == null ||
+            message.userMessage?.image == "" ? (
+              <img
+                className="w-[130px] rounded-[50%] ml-[44.5%] mb-[2%] h-[130px] object-cover"
+                src={imageee}
+                alt={"profile"}
+              />
+            ) : (
+              <img
+                className="w-[130px] rounded-[50%] ml-[44.5%] mb-[2%] h-[130px] object-cover"
+                src={`${import.meta.env.VITE_APP_FILES_URL}${
+                  message.userMessage?.image
+                }`}
+                alt={"profile"}
+              />
+            )}
+            <h1 className="text-[20px] text-white font-[900] mb-[1.5%]">
+              {message.userMessage?.fullName}
+            </h1>
+            <h1 className="text-[16px] text-white  font-[600]">
+              Connecting....
+            </h1>
+          </div>
+          <div className="mt-[4%]">
+            <img
+              className="w-[60%] m-auto h-[60px] "
+              src="https://bogatyr.club/uploads/posts/2023-03/1678895524_bogatyr-club-p-radiovolni-fon-foni-pinterest-46.png"
+              alt=""
+            />
+          </div>
+          <div className="flex items-center w-[60%] mt-[4%] m-auto justify-between">
+            <VideocamOutlinedIcon sx={{ color: "white", fontSize: "60px" }} />
+            <MicNoneOutlinedIcon sx={{ color: "white", fontSize: "60px" }} />
+            <img className="w-[100px]" src={img2} alt="" />
+            <img className="w-[100px]" src={img3} alt="" />
+          </div>
+        </div>
+      ) : null}
     </>
   );
 };
