@@ -14,15 +14,23 @@ import Registration from "./pages/Registration/Registration";
 import Security from "./pages/Security/Security";
 import Auth from "./components/Auth/Auth";
 
-export const App = () => {
+import Users from "./pages/search/Users";
+
+import AuthCheck from "./utils/AuthChek";
+import ProtectedRout from "./utils/ProtectedTout";
+
+ 
+export const App = () => { 
+
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Login />,
+      element: <AuthCheck> <Login /> </AuthCheck>,
     },
     {
-      path: "/basic",
-      element: <Layout />,
+
+      path: "/basic", 
+      element: <ProtectedRout> <Layout /> </ProtectedRout>,
       children: [
         {
           index: true,
@@ -41,6 +49,10 @@ export const App = () => {
           element: <Message />,
         },
         {
+          path: "users/:id",
+          element: <Users />,
+        },
+        {
           path: "notifications",
           element: <Natification />,
         },
@@ -57,9 +69,11 @@ export const App = () => {
           element: <Settings />,
         },
         {
-          path: "security",
-          element: <Security />,
-        },
+
+          path:"security",
+          element: <Security/>
+        }
+
       ],
     },
     {
