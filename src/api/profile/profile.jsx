@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { axiosRequest } from "../../utils/axiosRequest";
+import { Try } from "@mui/icons-material";
 
 export const getProfileById = createAsyncThunk(
   "profile/getProfileById",
@@ -51,3 +52,36 @@ export const getFollowers = createAsyncThunk(
     }
   }
 );
+
+export const putProfile = createAsyncThunk(
+  "profile/putProfile",
+  async function (user) {
+     console.log(user);
+    try {
+      let { data } = await axiosRequest.put(
+        `UserProfile/update-user-profile`,
+        user
+      );
+      console.log(data);
+      return data.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+ export const putProfileImage = createAsyncThunk(
+   "profile/putProfileImage",
+   async function (image) {
+    
+     try {
+       let { data } = await axiosRequest.put(
+         `UserProfile/update-profile-photo`,
+         image
+       );
+       console.log(data);
+       return data.data;
+     } catch (error) {
+       console.log(error);
+     }
+   }
+ );

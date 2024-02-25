@@ -7,6 +7,9 @@ import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import React, { useEffect, useState } from "react";
 
+import Logo from "../../assets/icons/logo.svg"
+
+import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAlt";
 import Carousel from "../../assets/icons/Carousel.png"
 
 import Backdrop from "@mui/material/Backdrop";
@@ -15,6 +18,11 @@ import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import "../../App.css"
+
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+
+// import { setComment } from "../../reducers/explore/Explore";
 
 const style = {
   position: "absolute",
@@ -63,6 +71,18 @@ const styleFollowing = {
   borderRadius: "10px",
   p: 4,
 };
+
+const styleImageEditProfile = {
+  position: "absolute",
+  top: "40%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  borderRadius: "10px",
+  p: 4,
+};
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
@@ -80,9 +100,11 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 import { destroyToken, getToken } from "../../utils/token";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 const Profile = () => {
   const [value, setValue] = useState("1");
+
+  const [imageEdit, setImageEdit] = useState("");
 
   const [search, setSearch] = useState("");
 
@@ -94,11 +116,25 @@ const Profile = () => {
   const handleOpenProfile = () => setMenuProfile(true);
   const handleCloseProfile = () => setMenuProfile(false);
 
+  const [editImageProfile, setEditImageProfile] = useState(false);
+  const handleOpenEditImageProfile = () => setEditImageProfile(true);
+  const handleCloseEditImageProfile = () => setEditImageProfile(false);
+
+  const [openPost,setOpenPost] = useState(false)
+
+  const [postImage, setPostImage] = useState();
+  
+  const handleOpenPost = (elem) => {
+    setOpenPost(true);
+    setPostImage(elem);   
+  };
+  const handleClosePost = () => setOpenPost(false);
+
   const [followingProfile, setFollowingProfile] = useState(false);
   const handleOpenFollowingProfile = () => setFollowingProfile(true);
   const handleCloseFollowingProfile = () => setFollowingProfile(false);
 
-  const [imageProfile, setImageProfile] = useState("");
+  const [imageProfile, setImageProfile] = useState([]);
 
   const [modalProfile, setModalProfile] = useState(false);
   const handleOpenModalProfile = (elem) => (
@@ -127,6 +163,7 @@ const Profile = () => {
   console.log(userProfile.userName);
   // console.log(postProfile)
   console.log(followingsUser);
+  console.log(userProfile.image);
 
   console.log(getToken());
   useEffect(() => {
@@ -134,18 +171,19 @@ const Profile = () => {
     dispatch(GetPostByUser(getToken().sid));
     dispatch(getFollowings(getToken().sid));
     dispatch(getFollowers(getToken().sid));
-  }, [dispatch]);
+  }, [dispatch],getProfileById());
 
   return (
     <div className="p-[60px] pr-[200px] ">
       <div className="flex justify-between items-center">
         <div className="w-[30%]">
           <img
-            className="w-[79%] rounded-full  h-[27vh]"
+            onClick={()=>handleOpenEditImageProfile()}
+            className="w-[81%] rounded-full cursor-pointer  h-[27vh] object-cover"
             src={
-              length == 0
-                ? "https://tse4.mm.bing.net/th?id=OIP.jixXH_Els1MXBRmKFdMQPAHaHa&pid=Api&P=0&h=220"
-                : userProfile.avatar
+              userProfile.image !== 0
+                ? `${import.meta.env.VITE_APP_FILES_URL}/${userProfile.image}`
+                : "https://tse4.mm.bing.net/th?id=OIP.jixXH_Els1MXBRmKFdMQPAHaHa&pid=Api&P=0&h=220"
             }
             alt=""
           />
@@ -156,12 +194,17 @@ const Profile = () => {
               <h1 className="text-[22px] font-[700]">{userProfile.userName}</h1>
             </div>
             <div className="flex items-center gap-[20px]  h-[50px] ">
-              <button
-                // onClick={() => handleOpenEditProfile()}
-                className="w-[120px]  text-[18px] h-[45px] bg-[whitesmoke] rounded-xl"
-              >
-                Edit profile
-              </button>
+              <NavLink to="/basic/profile/editProfile">
+                <button
+                  onClick={() => {
+                    getProfileById(getToken().sid);
+                  }}
+                  className="w-[120px]  text-[18px] h-[45px] bg-[whitesmoke] rounded-xl"
+                >
+                  Edit profile
+                </button>
+              </NavLink>
+
               <button className="w-[120px] text-[18px] h-[45px] bg-[whitesmoke] rounded-xl ">
                 View archive
               </button>
@@ -285,7 +328,7 @@ const Profile = () => {
               {postUser?.map((elem) => {
                 return (
                   <div
-                    onClick={() => handleOpenModalProfile(elem)}
+                    onClick={() => handleOpenPost(elem)}
                     className="w-[32.8%] mt-[10px] h-[35vh] cursor-pointer bg-[whitesmoke] rounded-lg   "
                   >
                     {elem.images.map((image, index) => (
@@ -312,24 +355,27 @@ const Profile = () => {
                   <span className="text-[22px]">+</span> New collection
                 </Button>
               </div>
-              <div className="flex gap-[0.6%] flex-wrap w-[600px] h-[500px] mt-[10px] overflow-auto">
+              <div
+                onClick={() => handleOpenPost()}
+                className="flex gap-[0.6%] flex-wrap w-[600px] h-[500px] mt-[10px] overflow-auto"
+              >
                 {postUser?.map((elem) => {
-                    return (
-                      elem.postFavourite?
-                        <div
-                          onClick={() => handleOpenModalProfile(elem)}
-                          className="w-[32.6%] mt-[0px] h-[23vh] rounded-md"
-                        >
-                          {elem.images.map((image, index) => (
-                            <img
-                              className="w-[100%] h-[100%] rounded-md object-cover"
-                              src={`${import.meta.env.VITE_APP_FILES_URL}/${elem.images[0]
-                                }`}
-                              alt=""
-                            />
-                          ))}
-                        </div> : null
-                    )                  
+                  return elem.postFavourite ? (
+                    <div
+                      onClick={() => handleOpenModalProfile(elem)}
+                      className="w-[32.6%] mt-[0px] h-[23vh] rounded-md"
+                    >
+                      {elem.images.map((image, index) => (
+                        <img
+                          className="w-[100%] h-[100%] rounded-md object-cover"
+                          src={`${import.meta.env.VITE_APP_FILES_URL}/${
+                            elem.images[0]
+                          }`}
+                          alt=""
+                        />
+                      ))}
+                    </div>
+                  ) : null;
                 })}
               </div>
             </div>
@@ -373,18 +419,18 @@ const Profile = () => {
           <Fade in={menuProfile}>
             <Box sx={style}>
               <div>
-                <h1 className="p-[15px] font-[500] text-[19px] rounded-xl hover:bg-[whitesmoke] hover:duration-500">
+                <h1 className="p-[15px] font-[500] text-[19px] bg-[whitesmoke] hover:text-[white] mt-[10px] rounded-xl hover:bg-[#b1b0b0] hover:duration-500">
                   QR code
                 </h1>
-                <h1 className="p-[15px] font-[500] text-[19px] rounded-xl hover:bg-[whitesmoke] hover:duration-500">
+                <h1 className="p-[15px] font-[500] text-[19px] rounded-xl mt-[10px] hover:text-[white] bg-[whitesmoke] hover:bg-[#b1b0b0] hover:duration-500">
                   Notification
                 </h1>
-                <h1 className="p-[15px] font-[500] text-[19px] rounded-xl hover:bg-[whitesmoke] hover:duration-500">
+                <h1 className="p-[15px] font-[500] text-[19px] rounded-xl hover:text-[white] mt-[10px] bg-[whitesmoke] hover:bg-[#b1b0b0] hover:duration-500">
                   Settings and privacy
                 </h1>
                 <h1
                   onClick={() => logOut()}
-                  className="p-[15px] font-[500] text-[19px] rounded-xl hover:bg-[whitesmoke] hover:duration-500 text-red-500"
+                  className="p-[15px] font-[500] text-[19px] rounded-xl mt-[10px] bg-[whitesmoke] hover:bg-[#b1b0b0] hover:duration-500 text-red-500"
                 >
                   Log out
                 </h1>
@@ -542,7 +588,6 @@ const Profile = () => {
                                     {e.userShortInfo.fullname}
                                   </h1>
                                 </div>
-                                
                               </div>
                               <div className="ml-[0px] mr-[10px]">
                                 <button className="text-[18px] hover:bg-[#00d9ff] hover:text-[white] p-[5px] rounded-lg hover:duration-500 text-[blue]">
@@ -563,8 +608,8 @@ const Profile = () => {
         <Modal
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"
-          open={modalProfile}
-          onClose={handleCloseModalProfile}
+          open={editImageProfile}
+          onClose={handleCloseEditImageProfile}
           closeAfterTransition
           slots={{ backdrop: Backdrop }}
           slotProps={{
@@ -573,10 +618,18 @@ const Profile = () => {
             },
           }}
         >
-          <Fade in={modalProfile}>
-            <Box sx={styleModal}>
-              <div>
-                <img src="" alt="" />
+          <Fade in={editImageProfile}>
+            <Box sx={styleImageEditProfile}>
+              <div className="p-[10px]">
+                <div className="w-[70%] m-[auto]">
+                  <img className="w-[100%]" src={Logo} alt="" />
+                </div>
+                <div className="mt-[10px]">
+                  <input className="outline-none" onChange={(e)=>setImageEdit(e.target.value)} type="file" />
+                </div>
+                <div className=" h-[30vh] mt-[10px] rounded-md">
+                    <img className="rounded-md" src={imageEdit} alt="" />
+                </div>
               </div>
             </Box>
           </Fade>

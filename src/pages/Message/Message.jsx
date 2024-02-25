@@ -349,7 +349,11 @@ const Message = () => {
       <div className="flex justify-between ">
         <div className="w-[30%] pt-[27px] ">
           <div className="flex w-[90%] m-auto justify-between items-center">
-          {/* <h1 className="text-[22px] font-[700]">{userProfile?.userName}</h1> */}
+
+            <h1 className="text-[22px] font-[700]">{userProfile?.userName}</h1>
+
+         
+
             <EditNoteIcon
               onClick={handleClickOpen}
               sx={{ color: "#2563EB", fontSize: 40 }}

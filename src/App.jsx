@@ -1,16 +1,16 @@
-import React from "react"; 
-import Login from "./pages/Login/Login"; 
-import Home from "./pages/Home/Home"; 
-import Explore from "./pages/Explore/Explore"; 
-import Reels from "./pages/Reels/Reels"; 
-import Message from "./pages/Message/Message"; 
-import Natification from "./pages/natification/Natification";
-import Profile from "./pages/Profile/Profile"; 
+import React from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Layout } from "./Layout/Layout";
+import Login from "./pages/Login/Login";
+import Home from "./pages/Home/Home";
+import Explore from "./pages/Explore/Explore";
+import Reels from "./pages/Reels/Reels";
+import Message from "./pages/Message/Message";
+import Natification from "./pages/Natification/Natification";
+import Profile from "./pages/Profile/Profile";
+import EditProfile from "./pages/EditProfile/EditProfile"; // Correct casing
 import Settings from "./pages/Settings/Settings";
-import editProfile from "./pages/editProfile/editProfile";
-import { createBrowserRouter, RouterProvider } from "react-router-dom"; 
-import { Layout } from "./Layout/Layout"; 
-import Registration from "./pages/Registration/Registration"; 
+import Registration from "./pages/Registration/Registration";
 import Security from "./pages/Security/Security";
 import Auth from "./components/Auth/Auth";
 
@@ -21,18 +21,20 @@ import ProtectedRout from "./utils/ProtectedTout";
 
  
 export const App = () => { 
+
   const router = createBrowserRouter([
     {
       path: "/",
       element: <AuthCheck> <Login /> </AuthCheck>,
     },
     {
+
       path: "/basic", 
       element: <ProtectedRout> <Layout /> </ProtectedRout>,
       children: [
         {
           index: true,
-          element: <Home/>,
+          element: <Home />,
         },
         {
           path: "explore",
@@ -59,24 +61,26 @@ export const App = () => {
           element: <Profile />,
         },
         {
-          path: "profile/account/editProfile",
-          element: <editProfile />,
+          path: "profile/editProfile", // Correct casing
+          element: <EditProfile />,
         },
         {
           path: "profile/account/settings",
           element: <Settings />,
         },
         {
+
           path:"security",
           element: <Security/>
         }
+
       ],
     },
     {
       path: "/registration",
       element: <Registration />,
     },
-  ]); 
- 
-  return <RouterProvider router={router} />; 
+  ]);
+
+  return <RouterProvider router={router} />;
 };
