@@ -60,7 +60,7 @@ dispatch(getHistory())
       <div className="ml-[-50px] flex gap-3 mt-[-50px] " onClick={()=>{dispatch(falseTrueModal());console.log(11);}}>
       <Swiper navigation={true} slidesPerView={7} height={"100px"} modules={[Navigation]} className="mySwiper">
       {
-          dataHistory.map((elem)=>{
+          dataHistory?.map((elem)=>{
             return(
               <>
                 <SwiperSlide >  
@@ -99,7 +99,7 @@ dispatch(getHistory())
     
     
 {
-      data.map((el,index)=>{
+      data?.map((el,index)=>{
         // console.log(el.images[0].length);
         // console.log(el.images[0].slice(el.images[0].length-3));
         // el.images[0].slice(el.images[0].length-3)
@@ -183,7 +183,7 @@ dispatch(getTodosByPost12())
 {/* ////LIKE and comment */}
 <div className="px-[10px]">
  <div className=" flex items-center gap-3">
-  <img className='w-[30px] h-[30px] object-cover rounded-[50%]' src={el.images[0].slice(el.images[0].length-3)=="mp4"||el.images.length==0?notFoundUser:`${urlImg}/${el.images[0]}`} alt="" />
+  <img className='w-[30px] h-[30px] object-cover rounded-[50%]' src={el?.images[0]?.slice(el?.images[0]?.length-3)=="mp4"||el.images.length==0?notFoundUser:`${urlImg}/${el.images[0]}`} alt="" />
  <p className='font-[500] text-[17px]' ><span>{el.postLikeCount}</span> Likes</p>
  </div>
 
@@ -208,7 +208,7 @@ setViewCom(true)
 
 {
   viewComment==el.postId&&el.comments.length!=0&&viewCom==true?<div>{
-    el.comments.map((ele,indexx)=>{
+    el.comments?.map((ele,indexx)=>{
       return(
         <>
         <div className="">
@@ -272,7 +272,7 @@ setViewCom(true)
       <div className="mt-[30px] flex flex-col gap-5">
         <div className="flex flex-col gap-5">
            {
-          dataUsers.map((elem)=>{
+          dataUsers?.map((elem)=>{
             return(
               <>
               <div className="flex items-center justify-between gap-3">
