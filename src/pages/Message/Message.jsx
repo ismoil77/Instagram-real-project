@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import img from "../../assets/images/message.svg";
 import img1 from "../../assets/images/message1.svg";
-import imageee from "../../assets/images/profile.png";
+import img2 from "../../assets/images/1.svg";
+import img3 from "../../assets/images/2.svg";
+import calling from "../../assets/video/call.mp3";
+import imageee from "../../assets/images/polzovatel.jpg";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -16,10 +19,11 @@ import VideocamOutlinedIcon from "@mui/icons-material/VideocamOutlined";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import SentimentSatisfiedAltOutlinedIcon from "@mui/icons-material/SentimentSatisfiedAltOutlined";
 import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
+// import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import InsertPhotoOutlinedIcon from "@mui/icons-material/InsertPhotoOutlined";
 import SendIcon from "@mui/icons-material/Send";
 import { getToken } from "../../utils/token";
-import "../../App.css";
+import "../../App.css"
 import { styled } from "@mui/material/styles";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -31,6 +35,8 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+
+
 
 import { axiosRequest } from "../../utils/axiosRequest";
 import { useDispatch, useSelector } from "react-redux";
@@ -46,6 +52,7 @@ import {
 } from "../../api/Message/messageApi";
 import { setUserMessage } from "../../reducers/Message/Message";
 import { useNavigate } from "react-router";
+
 
 const style1 = {
   position: "absolute",
@@ -116,6 +123,7 @@ const Message = () => {
   const message = useSelector((state) => state.message);
   const byid = useSelector((state) => state.message.byid);
   const chatmessage = useSelector((state) => state.message.chatMessage);
+  
 
   const style = {
     position: "absolute",
@@ -154,7 +162,7 @@ const Message = () => {
   const [chatIdx1, setChatIdx1] = useState(null)
   const [chatIdx2, setChatIdx2] = useState(null)
 
-  const userProfile = useSelector((store) => store.profile.userProfile);
+  // const userProfile = useSelector((store) => store.profile.userProfile);
 
   
   const [messageidx, setMessageidx] = useState(null)
@@ -222,7 +230,8 @@ const Message = () => {
   //   }
   // }
 
-  async function sendMessage() {
+  async function sendMessage(e) {
+    e.preventDefault()
     if (message1.trim().length > 0) {
       try {
         console.log(chatIdx);
@@ -340,7 +349,7 @@ const Message = () => {
       <div className="flex justify-between ">
         <div className="w-[30%] pt-[27px] ">
           <div className="flex w-[90%] m-auto justify-between items-center">
-          <h1 className="text-[22px] font-[700]">{userProfile.userName}</h1>
+          {/* <h1 className="text-[22px] font-[700]">{userProfile?.userName}</h1> */}
             <EditNoteIcon
               onClick={handleClickOpen}
               sx={{ color: "#2563EB", fontSize: 40 }}
@@ -354,7 +363,7 @@ const Message = () => {
               Requests
             </h1>
           </div>
-          <div className="w-[90%] m-auto mt-[5%] h-[80%] overflow-y-scroll">
+          <div className="w-[90%] m-auto mt-[5%] h-[70%] overflow-y-scroll">
             {data.length > 0 &&
               data.map((e) => {
                 console.log(data);
@@ -375,8 +384,8 @@ const Message = () => {
                     {e.receiveUser.userPhoto == null ||
                     e.receiveUser.userPhoto == "" ? (
                       <img
-                        className="w-[50px] h-[50px] object-cover"
-                        src={imageee}
+                        className="w-[50px] h-[50px] rounded-[50%] object-cover"
+                        src={imageee}  
                         alt={"profile"}
                       />
                     ) : (
@@ -450,15 +459,15 @@ const Message = () => {
                     </div>
                   </div>
                   <div className="w-[15%] flex justify-between items-center">
-                    <CallIcon />
-                    <VideocamOutlinedIcon />
+                    <CallIcon onClick={()=> setCall(true)} />
+                    <VideocamOutlinedIcon onClick={()=> setCall(true)} />
                     <InfoOutlinedIcon onClick={() => setmodal(true)} />
                   </div>
                 </div>
               </div>
             </div>
 
-            <div onClick={() => setmodal(close)} className="h-[460px] overflow-y-scroll ">
+            <div onClick={() => setmodal(close)} className="h-[77vh] overflow-y-scroll ">
               <div className="">
                   {chatmessage?.map((e) => {
                     if(e.userId == getToken().sid){
@@ -549,7 +558,6 @@ const Message = () => {
                   >
                     Send Message<p> <SendIcon
                 sx={{ paddingLeft: 1, fontSize: 30 }}
-                onClick={() => sendMessage()}
               /></p>
                   </p>
                 <p
@@ -571,25 +579,35 @@ const Message = () => {
               </Modal>
             </div>
 
-            <div className="w-[98%] m-auto h-[45px] border  rounded-[10px]">
+            <form onSubmit={sendMessage} className="w-[98%] mt-[1%] flex items-center m-auto h-[45px] border  rounded-[10px]">
               <SentimentSatisfiedAltOutlinedIcon
                 sx={{ paddingLeft: 1, fontSize: 35 }}
                 onClick={()=> setEmoji(true)}
               />
               <input
                 type="text"
-                className=" outline-none  pt-[1.5%] pl-[10px] w-[84%]"
+                className=" outline-none pl-[10px] w-[84%]"
                 value={message1}
                 onChange={(event) => setMessage1(event.target.value)}
                 placeholder="Write a message..."
               />
               
-              <MicNoneOutlinedIcon />
-              <InsertPhotoOutlinedIcon sx={{ paddingLeft: 1, fontSize: 30 }} />
-             <SendIcon 
-             onClick={()=> sendMessage()}
-              sx={{ paddingLeft: 1, fontSize: 30 }}/>
-            </div>
+              
+                {
+                  message1.trim().length>0? <div className="">
+                 
+              <button type="submit" onClick={()=> sendMessage()} className="text-[#15bdff] flex items-center ml-[-15%] font-mono font-[700]">Opublikovat <SendIcon 
+             
+              sx={{ paddingLeft: 1, fontSize: 30 }}/></button>
+              </div>: <div className="ml-[3%]">
+              <MicNoneOutlinedIcon sx={{fontSize:27}} />
+              <InsertPhotoOutlinedIcon sx={{ paddingLeft: 1, fontSize: 35 }} />
+           
+              </div>
+             
+                }
+               
+            </form>
           </div>
         )}
       </div>
@@ -629,7 +647,7 @@ const Message = () => {
       </Modal>
 
       {modal ? (
-        <div className="">
+        <div className=" overflow-hidden">
           <div className="open h-[100%] w-[25%] left-[75%] absolute top-0 border bg-white">
             <div className="w-[90%] mt-[6%] m-auto">
               <h1 className="font-[500] text-[22px]  ">Information</h1>
@@ -708,6 +726,52 @@ const Message = () => {
         <div className="absolute top-1 bg-[green]">
           <img src="&#128512" alt="" />
           <h1></h1>
+        </div>:null
+      }
+      {
+        call?
+        <div className="w-[100%] h-[100%] bg-gray-900 absolute top-0 left-[-0%]">
+           <div className=" mt-[1%] text-center w-[100%]">
+           <div className="flex w-[90%] m-auto mb-[3%] justify-between items-center">
+           <img className="w-[3%]" src="https://cdn2.iconfinder.com/data/icons/music-player-icons-filled/46/Drop_Down-1024.png" alt="" />
+            <img onClick={()=> setCall(false)} className="w-[70px] h-[70px] rounded-[50%]" src="https://e7.pngegg.com/pngimages/455/885/png-clipart-telephone-call-computer-icons-iphone-iphone-electronics-text.png" alt="" />
+           </div>
+           <audio autoPlay src={calling}></audio>
+           {message.userMessage?.image == null ||
+                    message.userMessage?.image == "" ? (
+                      <img
+                        className="w-[130px] rounded-[50%] ml-[44.5%] mb-[2%] h-[130px] object-cover"
+                        src={imageee}
+                        alt={"profile"}
+                      />
+                    ) : (
+                      <img
+                        className="w-[130px] rounded-[50%] ml-[44.5%] mb-[2%] h-[130px] object-cover"
+                        src={`${import.meta.env.VITE_APP_FILES_URL}${
+                          message.userMessage?.image
+                        }`}
+                        alt={"profile"}
+                      />
+                    )}
+                     <h1 className="text-[20px] text-white font-[900] mb-[1.5%]">
+                        {message.userMessage?.fullName} 
+                      </h1>
+                     <h1 className="text-[16px] text-white  font-[600]">
+                        Connecting....
+                      </h1>
+
+           </div>
+           <div className="mt-[4%]"> 
+          
+            <img className="w-[60%] m-auto h-[60px] " src="https://bogatyr.club/uploads/posts/2023-03/1678895524_bogatyr-club-p-radiovolni-fon-foni-pinterest-46.png" alt="" />
+           </div>
+           <div className="flex items-center w-[60%] mt-[4%] m-auto justify-between">
+           <VideocamOutlinedIcon sx={{color:"white",fontSize:"60px"}} />
+           <MicNoneOutlinedIcon  sx={{color:"white",fontSize:"60px"}} />
+          <img className="w-[100px]" src={img2} alt="" />
+          <img className="w-[100px]" src={img3} alt="" />
+           </div>
+           
         </div>:null
       }
       
