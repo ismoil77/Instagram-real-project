@@ -618,7 +618,7 @@ export const Layout = () => {
         moreModal ?
         (
           <div className="bg-white shadow-2xl p-[20px] rounded-[20px] w-[22%] fixed bottom-[170px] left-[20px] flex flex-col gap-3 items-start">
-            <button className=" flex px-[5%] w-[100%] rounded-md bg-[#f2f2f2] hover:bg-[#ccc] text-[20px]  py-[10px] gap-[20px] item-center"> <SettingsIcon/> Setting</button>
+            <button className=" flex px-[5%] w-[100%] rounded-md bg-[#f2f2f2] hover:bg-[#ccc] text-[20px]  py-[10px] gap-[20px] item-center" onClick={() => {navigation("profile/account/settings") , setMoreModal(false)}}> <SettingsIcon/> Setting</button>
             <button className=" flex px-[5%] w-[100%] rounded-md bg-[#f2f2f2] hover:bg-[#ccc] text-[20px]  py-[10px] gap-[20px] item-center">  Your Actions</button>
             <button className=" flex px-[5%] w-[100%] rounded-md bg-[#f2f2f2] hover:bg-[#ccc] text-[20px]  py-[10px] gap-[20px] item-center">  Saved</button>
             <button className=" flex px-[5%] w-[100%] rounded-md bg-[#f2f2f2] hover:bg-[#ccc] text-[20px]  py-[10px] gap-[20px] item-center">  Change theme</button>
