@@ -19,7 +19,7 @@ import navMessages from "../assets/icons/nav-messages.svg";
 import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 import { Avatar, TextField } from "@mui/material";
 import navProfile from "../assets/images/nav-profile.jpg";
-
+import Switcher from "../components/switcher/Switcher";
 import ClearIcon from "@mui/icons-material/Clear";
 import video from '/src/assets/video/i.mp4'
 
@@ -182,12 +182,12 @@ export const Layout = () => {
           <ul
             className={`${
               "modalSearch" ? "items-start gap-[16.5px]" : "items-stretch"
-            } flex flex-col gap-[1.4vh_0]`}
+            } flex flex-col gap-[2.3vh_0] ml-[5px]`}
           >
             {/* Logo */}
             <Link to="/basic">
               <li
-                className={` ml-[5px]  mb-[4vh] ${
+                className={` ml-[5px]  mb-[3vh] ${
                   location.pathname === "/basic/message" ||
                   location.pathname === "/basic/message/newMessage" ||
                   searchMod === true ||
@@ -211,7 +211,7 @@ export const Layout = () => {
               </li>
 
               {/* instagram icon */}
-              <li  className={`px-[7px]  mb-[5.7vh] ${
+              <li  className={`px-[7px]  mb-[5.4vh] ${
                   location.pathname === "/basic/message" ||
                   location.pathname === "/basic/message/newMessage" ||
                   searchMod === true ||
@@ -448,9 +448,8 @@ export const Layout = () => {
       </aside>
       {/* searchmodal  */}
       {searchMod ? (
-        // <div className="absolute w-[100%] h-[100vh]">
-        <MySearch />
-      ) : // </div>
+        <MySearch state={setSearchMod} />
+      ) : 
       null}
       {notMod ? (
         // <div className="absolute w-[100%] h-[100vh]">
@@ -755,6 +754,7 @@ export const Layout = () => {
 
             <button className=" flex px-[5%] w-[100%] rounded-md bg-[#f2f2f2] hover:bg-[#ccc] text-[20px]  py-[10px] gap-[20px] item-center">  Your Actions</button>
             <button className=" flex px-[5%] w-[100%] rounded-md bg-[#f2f2f2] hover:bg-[#ccc] text-[20px]  py-[10px] gap-[20px] item-center">  Saved</button>
+            <button className=" flex px-[5%] w-[100%] rounded-md bg-[#f2f2f2] hover:bg-[#ccc] text-[20px]  py-[10px] gap-[20px] item-center"> <Switcher/> </button>
             <button className=" flex px-[5%] w-[100%] rounded-md bg-[#f2f2f2] hover:bg-[#ccc] text-[20px]  py-[10px] gap-[20px] item-center">  Change theme</button>
             <button className=" flex px-[5%] w-[100%] rounded-md bg-[#f2f2f2] hover:bg-[#ccc] text-[18px]  py-[10px] gap-[10px] item-center" onClick={() => {navigation("/basic/security") , setMoreModal(false)}}><ShieldOutlinedIcon/> password and security</button>
             <hr className="border border-[gray] my-[-10px]" />

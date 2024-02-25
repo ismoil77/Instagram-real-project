@@ -13,8 +13,12 @@ import { Layout } from "./Layout/Layout";
 import Registration from "./pages/Registration/Registration"; 
 import Security from "./pages/Security/Security";
 import Auth from "./components/Auth/Auth";
+
+import Users from "./pages/search/Users";
+
 import AuthCheck from "./utils/AuthChek";
 import ProtectedRout from "./utils/ProtectedTout";
+
  
 export const App = () => { 
   const router = createBrowserRouter([
@@ -41,6 +45,10 @@ export const App = () => {
         {
           path: "message/*",
           element: <Message />,
+        },
+        {
+          path: "users/:id",
+          element: <Users />,
         },
         {
           path: "notifications",
