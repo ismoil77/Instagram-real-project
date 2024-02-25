@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit"
 import { addCommentFromUser, getAllUser, getFollow, getHistory, getLike, getSav, getTodosByPost12, getUserAbout } from "../../api/home/home"
+import { followingByID, unFollowingByID } from "../../api/followUnfollow/followUnfollow"
+import { getFollowers } from "../../api/profile/profile"
 
 
 
@@ -13,14 +15,15 @@ export const HomeJs = createSlice({
         user:[],
         dataHistory:[],
         dataUsers:[],
+     followersUser: [],
         modalOpenClose:false,
         like:false
     },
     reducers: {
   falseTrueModal:(state,action)=>{
     // console.log(true);
-        state.falseTrueModal=!state.falseTrueModal
-        // console.log(state.falseTrueModal);
+        state.modalOpenClose=!state.modalOpenClose
+        // console.log(state.modalOpenClose);
   }
     },
     extraReducers:(builder)=>{
@@ -52,7 +55,7 @@ export const HomeJs = createSlice({
                 // state.user=action.payload
                 
              state.dataUsers = action.payload
-             console.log(action.payload);
+            //  console.log(action.payload);
                 })
 
                 builder.addCase(getFollow.fulfilled, (state,action)=>{
@@ -63,11 +66,21 @@ export const HomeJs = createSlice({
                   })
                   builder.addCase(getHistory.fulfilled, (state,action)=>{
                     state.dataHistory=action.payload
-                    console.log(action.payload);
+                    // console.log(action.payload);
                 //  state.dataUsers = action.payload
                 //  console.log(action.payload);
                     })
-                
+                    builder.addCase(unFollowingByID.fulfilled, (state,action)=>{
+                    //  action.payload
+                    
+                      })
+                      /////////////////unfollow
+                      builder.addCase(getFollowers.fulfilled, (state, action) => {
+                        state.followersUser = action.payload;
+                        state.isLoading = false;
+                    });
+                    
+                 
     }
     
     
