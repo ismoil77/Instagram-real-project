@@ -10,6 +10,17 @@ export const getUsers = createAsyncThunk("searchUsers/getUsers", async (sear = "
     }
 })
 
+export const getUsersId = createAsyncThunk("searchUsers/getUsersId", async (id) => {
+    // console.log(id);
+    try {
+        const {data} = await axiosRequest.get(`UserProfile/get-user-profile-by-id?id=${id}`)
+        // console.log(data.data);
+        return data.data
+    } catch (error) {
+        console.error(error);
+    }
+})
+
 export const getUserHistory = createAsyncThunk("searchUsers/getUserHistory", async () => {
     try {
         const {data} = await axiosRequest.get(`SearchHistory/get-user-search-histories`)

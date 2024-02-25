@@ -15,6 +15,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import { Link } from "react-router-dom";
 
 const style = {
   position: "absolute",
@@ -29,7 +30,7 @@ const style = {
   flexDirection: "column",
 };
 
-const MySearch = () => {
+const MySearch = ({ state }) => {
   const data = useSelector((state) => state.searchUsers.data);
   const dataHistory = useSelector((state) => state.searchUsers.dataHistory);
   const dispatch = useDispatch();
@@ -48,7 +49,7 @@ const MySearch = () => {
   };
 
   return (
-    <div className="searchMod">
+    <div className="searchMod bg-[white]">
       <article className="py-[20px] px-[16px] border-b">
         <h1 className="text-[24px] font-[600] ml-[4px]">Search query</h1>
         <input
@@ -81,17 +82,62 @@ const MySearch = () => {
             </div>
             {dataHistory.length === 0 ? (
               <h1 className="text-center text-[grey] mt-[28vh]">
-               There are no recent requests.
+                There are no recent requests.
               </h1>
             ) : (
               dataHistory.map((e) => {
                 return (
+                  <Link to={`users/${e.users.id}`} onClick={() => state(false)}>
+                    <div
+                      key={e.id}
+                      className="flex justify-between items-center w-[100%] hover:bg-gray-200 px-[24px] py-[10px]"
+                    >
+                      <div className="flex w-[90%] items-center">
+                        {e.users.avatar == null || e.users.avatar == "" ? (
+                          <img
+                            className="w-[43px] h-[43px] object-cover rounded-[100px]"
+                            src={user}
+                            alt={"profile"}
+                          />
+                        ) : (
+                          <img
+                            className="w-[43px] h-[43px] rounded-[50%] object-cover"
+                            src={`${import.meta.env.VITE_APP_FILES_URL}${
+                              e?.users.avatar
+                            }`}
+                            alt={"profile"}
+                          />
+                        )}
+                        <div className="ml-[5%]">
+                          <h1 className="text-[14px] font-[600]">
+                            {e.users.userName}
+                          </h1>
+                          <h1 className="text-[14px] text-gray-500 mt-[-5px]">
+                            {e.users.fullName}
+                          </h1>
+                        </div>
+                      </div>
+                      <button onClick={() => dispatch(delUserHistory(e.id))}>
+                        <CloseIcon sx={{ color: "grey" }} />
+                      </button>
+                    </div>
+                  </Link>
+                );
+              })
+            )}
+          </div>
+        ) : (
+          <main>
+            {data.map((e) => {
+              return (
+                <Link to={`users/${e.id}`} onClick={() => state(false)}>
                   <div
+                    onClick={() => dispatch(postUserHistory(e.id))}
                     key={e.id}
                     className="flex justify-between items-center w-[100%] hover:bg-gray-200 px-[24px] py-[10px]"
                   >
                     <div className="flex w-[90%] items-center">
-                      {e.users.avatar == null || e.users.avatar == "" ? (
+                      {e.avatar == null || e.avatar == "" ? (
                         <img
                           className="w-[43px] h-[43px] object-cover rounded-[100px]"
                           src={user}
@@ -101,61 +147,20 @@ const MySearch = () => {
                         <img
                           className="w-[43px] h-[43px] rounded-[50%] object-cover"
                           src={`${import.meta.env.VITE_APP_FILES_URL}${
-                            e?.users.avatar
+                            e?.avatar
                           }`}
                           alt={"profile"}
                         />
                       )}
                       <div className="ml-[5%]">
-                        <h1 className="text-[14px] font-[600]">
-                          {e.users.userName}
-                        </h1>
+                        <h1 className="text-[14px] font-[600]">{e.userName}</h1>
                         <h1 className="text-[14px] text-gray-500 mt-[-5px]">
-                          {e.users.fullName}
+                          {e.fullName}
                         </h1>
                       </div>
                     </div>
-                    <button onClick={() => dispatch(delUserHistory(e.id))}>
-                      <CloseIcon sx={{ color: "grey" }} />
-                    </button>
                   </div>
-                );
-              })
-            )}
-          </div>
-        ) : (
-          <main>
-            {data.map((e) => {
-              return (
-                <div
-                  onClick={() => dispatch(postUserHistory(e.id))}
-                  key={e.id}
-                  className="flex justify-between items-center w-[100%] hover:bg-gray-200 px-[24px] py-[10px]"
-                >
-                  <div className="flex w-[90%] items-center">
-                    {e.avatar == null || e.avatar == "" ? (
-                      <img
-                        className="w-[43px] h-[43px] object-cover rounded-[100px]"
-                        src={user}
-                        alt={"profile"}
-                      />
-                    ) : (
-                      <img
-                        className="w-[43px] h-[43px] rounded-[50%] object-cover"
-                        src={`${import.meta.env.VITE_APP_FILES_URL}${
-                          e?.avatar
-                        }`}
-                        alt={"profile"}
-                      />
-                    )}
-                    <div className="ml-[5%]">
-                      <h1 className="text-[14px] font-[600]">{e.userName}</h1>
-                      <h1 className="text-[14px] text-gray-500 mt-[-5px]">
-                        {e.fullName}
-                      </h1>
-                    </div>
-                  </div>
-                </div>
+                </Link>
               );
             })}
           </main>
@@ -172,9 +177,9 @@ const MySearch = () => {
           <div className="text-center px-[40px] py-[25px]">
             <h1 className="text-[21px] mb-[5px]">Clear search history?</h1>
             <h1 className="text-[grey]">
-            You will not be able to undo this action. If you clear history
-              search, the accounts you searched for may still
-              appear in recommended results.
+              You will not be able to undo this action. If you clear history
+              search, the accounts you searched for may still appear in
+              recommended results.
             </h1>
           </div>
           <button
