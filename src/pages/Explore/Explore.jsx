@@ -88,14 +88,13 @@ const Explore = () => {
   const [isFollowing, setFollowing] = useState(false);
 
   const handleButtonClick = () => {
-    // Toggle the value of isFollowing
     setFollowing((prevFollowing) => !prevFollowing);
   };
 
   return (
-    <div className="w-[88%] m-auto">
+    <div className="w-[75%] m-auto">
       <div className="grid grid-cols-3 gap-[5px] mt-[30px] ">
-        {data.map((el, i) => {
+        {data?.map((el, i) => {
           return (
             <div
               style={{ position: "relative" }}
@@ -111,8 +110,8 @@ const Explore = () => {
                 i + 1 == 16 ||
                 i + 1 == 21 ||
                 i + 1 == 28
-                  ? " w-[350px] row-span-2 h-auto rounded-[1px] hover:opacity-50 duration-100 ease-in cursor-pointer text-center"
-                  : "h-[350px] w-[350px] rounded-[1px] hover:opacity-50 duration-100 ease-in cursor-pointer text-center"
+                  ? " w-[300px] row-span-2 h-[610px] rounded-[1px] hover:opacity-50 duration-100 ease-in cursor-pointer text-center"
+                  : "h-[300px] w-[300px] rounded-[1px] hover:opacity-50 duration-100 ease-in cursor-pointer text-center"
               }
             >
               <div className="w-[100%] flex flex-col items-center justify-center text-[#00000000] hover:text-[white]  h-[100%] hover:bg-[#0000006d] absolute ">
@@ -139,8 +138,8 @@ const Explore = () => {
                   i + 1 == 16 ||
                   i + 1 == 21 ||
                   i + 1 == 28
-                    ? " w-[350px] h-[705px]  object-cover"
-                    : "h-[350px] w-[350px] object-cover"
+                    ? " w-[300px] h-[610px]  object-cover"
+                    : "h-[300px] w-[300px] object-cover"
                 }
                 src={`${imgUrl}/${el?.images}`}
                 alt=""
