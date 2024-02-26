@@ -92,7 +92,7 @@ const Explore = () => {
   };
 
   return (
-    <div className="w-[75%] m-auto">
+    <div className="w-[92%] m-auto">
       <div className="grid grid-cols-3 gap-[5px] mt-[30px] ">
         {data?.map((el, i) => {
           return (
@@ -110,8 +110,8 @@ const Explore = () => {
                 i + 1 == 16 ||
                 i + 1 == 21 ||
                 i + 1 == 28
-                  ? " w-[300px] row-span-2 h-[610px] rounded-[1px] hover:opacity-50 duration-100 ease-in cursor-pointer text-center"
-                  : "h-[300px] w-[300px] rounded-[1px] hover:opacity-50 duration-100 ease-in cursor-pointer text-center"
+                  ? " w-[100%] row-span-2 h-[610px] rounded-[1px] hover:opacity-50 duration-100 ease-in cursor-pointer text-center"
+                  : "h-[300px] w-[100%] rounded-[1px] hover:opacity-50 duration-100 ease-in cursor-pointer text-center"
               }
             >
               <div className="w-[100%] flex flex-col items-center justify-center text-[#00000000] hover:text-[white]  h-[100%] hover:bg-[#0000006d] absolute ">
@@ -138,8 +138,8 @@ const Explore = () => {
                   i + 1 == 16 ||
                   i + 1 == 21 ||
                   i + 1 == 28
-                    ? " w-[300px] h-[610px]  object-cover"
-                    : "h-[300px] w-[300px] object-cover"
+                    ? " w-[100%] h-[610px]  object-cover"
+                    : "h-[300px] w-[100%] object-cover"
                 }
                 src={`${imgUrl}/${el?.images}`}
                 alt=""
