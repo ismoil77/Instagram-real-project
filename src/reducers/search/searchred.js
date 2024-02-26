@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { getUserHistory, getUsers, getUsersId } from '../../pages/search/search'
+import { getPostId, getUserHistory, getUsers, getUsersId } from '../../pages/search/search'
 
 export const counterSlice = createSlice({
   name: 'searchUsers',
@@ -7,6 +7,7 @@ export const counterSlice = createSlice({
     data: [],
     dataHistory: [],
     dataUserId: [],
+    postId:[]
   },
   reducers: {},
   
@@ -42,6 +43,17 @@ export const counterSlice = createSlice({
         state.dataUserId = actions.payload
     })
     builder.addCase(getUsersId.rejected, (state, actions) => {
+        console.log(error);
+    })
+
+    // getPostId
+    builder.addCase(getPostId.pending, (state, actions) => {
+        console.log(1);
+    })
+    builder.addCase(getPostId.fulfilled, (state, actions) => {
+        state.postId = actions.payload
+    })
+    builder.addCase(getPostId.rejected, (state, actions) => {
         console.log(error);
     })
   }

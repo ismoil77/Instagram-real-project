@@ -18,7 +18,7 @@ import ExploreOutlinedIcon from "@mui/icons-material/ExploreOutlined";
 import navMessages from "../assets/icons/nav-messages.svg";
 import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 import { Avatar, TextField } from "@mui/material";
-import navProfile from "../assets/images/nav-profile.jpg";
+import navProfile from "../assets/images/polzovatel.jpg";
 import Switcher from "../components/switcher/Switcher";
 import ClearIcon from "@mui/icons-material/Clear";
 import video from '/src/assets/video/i.mp4'
