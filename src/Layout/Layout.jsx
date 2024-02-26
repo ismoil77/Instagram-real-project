@@ -162,7 +162,7 @@ export const Layout = () => {
         className={`left ${
           location.pathname === "/basic/message" ||
           location.pathname === "/basic/message/newMessage" ||
-          searchMod === true,
+          searchMod === true ||
           notMod === true
             ? "w-[6%]"
             : "w-[19%]"

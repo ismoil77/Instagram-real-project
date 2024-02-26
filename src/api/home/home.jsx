@@ -5,7 +5,7 @@ import { axiosRequest } from "../../utils/axiosRequest";
 export const getTodosByPost12 = createAsyncThunk("todo/getTodosById", async () => {
     try {
         let { data } = await axiosRequest.get(`Post/get-posts?PageSize=${15}`);
-console.log(data);
+// console.log(data);
       return data.data;
     } catch (error) {
       console.error(error);

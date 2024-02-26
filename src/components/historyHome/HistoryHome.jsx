@@ -22,6 +22,7 @@ import heartActive from "/src/assets/imgHome/heartAcive.png";
 
 /////////////////storie/////
 import Stories, { WithSeeMore } from "react-insta-stories";
+import { falseTrueModal } from "../../reducers/Home/Home";
 
 const style = {
   position: "absolute",
@@ -54,16 +55,10 @@ const HistoryHome = ({ state1 }) => {
 
   return (
     <div className="bg-white mx-auto ">
-      <Button
-        className="absolut top-0 font-bold font-serif bg-gradient-to-r from-[#DE0046] to-[#F7A34B] flex justify-center"
-        variant="contained"
-        onClick={handleOpen}
-      >
-        OPEN ALL HISTORIES
-      </Button>
+    
       <Modal
-        open={open}
-        onClose={handleClose}
+        open={dataClose}
+        // onClose={dataClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -72,7 +67,7 @@ const HistoryHome = ({ state1 }) => {
             <button className="w-[40px]">
               <img
                 className="invert"
-                onClick={handleClose}
+                onClick={()=>dispatch(falseTrueModal())}
                 src={closeClose}
                 alt=""
               />
@@ -104,7 +99,7 @@ const HistoryHome = ({ state1 }) => {
                 ?.map((eleme) => {
                   return (
                     <>
-                      {console.log(eleme)}
+                      {/* {console.log(eleme)} */}
 
                       <SwiperSlide className="h-[600px] bg-[black] text-[white] rounded-[10px] mb-[100px]">
                         <div className="w-[100%]" key={eleme.userId}>
