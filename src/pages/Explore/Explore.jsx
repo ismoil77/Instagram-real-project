@@ -141,7 +141,7 @@ const Explore = () => {
                     ? " w-[100%] h-[610px]  object-cover"
                     : "h-[300px] w-[100%] object-cover"
                 }
-                src={`${imgUrl}/${el?.images}`}
+                src={`${imgUrl}/${el?.images}`} 
                 alt=""
               />
               {el?.images?.length > 1 ? (
