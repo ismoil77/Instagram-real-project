@@ -26,6 +26,7 @@ export const GetPostByUser = createAsyncThunk(
     }
   }
 );
+
 export const getFollowings = createAsyncThunk(
   "profile/getFollowings",
   async function (id) {
