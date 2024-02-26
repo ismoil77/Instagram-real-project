@@ -56,21 +56,30 @@ export const postSave = createAsyncThunk(
 );
 
 
-export const postFollow = createAsyncThunk(
-  "Post/postFollow",
-  async (id, { dispatch }) => {
-    console.log(id);
+// export const getFollowings = createAsyncThunk(
+//   "profile/getFollowings",
+//   async function (id) {
+//     try {
+//       let { data } = await axiosRequest.get(
+//         `FollowingRelationShip/get-subscribers?UserId=${id}`
+//       );
+//       return data.data;
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   }
+// );
+// export const getFollowers = createAsyncThunk(
+//   "profile/getFollowers",
+//   async function (id) {
+//     try {
+//       let { data } = await axiosRequest.get(
+//         `FollowingRelationShip/get-subscriptions?UserId=${id}`
+//       );
+//       return data.data;
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   }
+// );
 
-    try {
-      let { data } = await axiosRequest.post(`add-following-relation-ship?followingUserId=${id}`, {
-        userId: id,
-      });
-      
-      // Handle successful response
-    } catch (error) {
-      console.log(error);
-      // Handle error
-      return rejectWithValue(error.message);
-    }
-  }
-);
