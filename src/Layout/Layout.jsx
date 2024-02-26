@@ -636,7 +636,7 @@ export const Layout = () => {
               <p className="text-[20px] font-[500]">Trim</p>
               <p className="text-[18px] text-[#3B82F6] hover:text-black cursor-pointer" onClick={() => {setSettingModal(true) , setModal(false) ,setAddModal(false)}}>Next</p>
             </div>
-            <Swiper className="mySwiper">
+            <Swiper className="mySwiper p-[0] m-0">
               {
                 data.length > 0 && data?.map((el , i)=>
                 {
@@ -649,7 +649,7 @@ export const Layout = () => {
                       {
                         return(
   
-                        <SwiperSlide key={i}>
+                        <SwiperSlide key={i} className="m-0 h-[70svh]">
                           <video autoPlay loop className="w-[100%] h-[100%] bg-black">
                             <source type="video/mp4" className="w-[100%] h-[100%]"  src={`${URL.createObjectURL(files[i])}`} onError={(error) => console.log(error)} />
                           </video> 
@@ -659,7 +659,7 @@ export const Layout = () => {
                       else
                       {
                         return(
-                          <SwiperSlide key={i}>
+                          <SwiperSlide key={i} className="m-0 h-[70svh]">
                             <img src={el} className="w-[100%] h-[100%] " alt="Picture" />
                           </SwiperSlide>
                         )
@@ -687,7 +687,7 @@ export const Layout = () => {
               <p className="text-[18px] text-[#3B82F6] hover:text-black cursor-pointer" onClick={() => post()}>Post</p>
             </div>
             <div className="flex">
-              <Swiper style={{width:"63%"}} className="mySwiper">
+              <Swiper style={{width:"63%" , padding:"0"}} className="mySwiper">
                 {
                   data.length > 0 && data?.map((el , i)=>
                   {
@@ -700,7 +700,7 @@ export const Layout = () => {
                       {
                         return(
   
-                        <SwiperSlide key={i}>
+                        <SwiperSlide key={i} className="m-0 h-[70svh]">
                           <video autoPlay loop className="w-[100%] h-[100%] bg-black">
                             <source type="video/mp4" className="w-[100%] h-[100%]"  src={`${URL.createObjectURL(files[i])}`} onError={(error) => console.log(error)} />
                           </video> 
@@ -710,7 +710,7 @@ export const Layout = () => {
                       else
                       {
                         return(
-                          <SwiperSlide key={i}>
+                          <SwiperSlide key={i} className="m-0 h-[70svh]">
                             <img src={el} className="w-[100%] h-[100%] " alt="Picture" />
                           </SwiperSlide>
                         )
