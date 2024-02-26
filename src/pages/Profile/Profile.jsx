@@ -7,6 +7,9 @@ import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import React, { useEffect, useState } from "react";
 
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+
+
 import Logo from "../../assets/icons/logo.svg"
 
 import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAlt";
@@ -83,6 +86,18 @@ const styleImageEditProfile = {
   borderRadius: "10px",
   p: 4,
 };
+
+const stylePost = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 500,
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  borderRadius: "10px",
+  p: 4,
+};
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
@@ -96,7 +111,13 @@ import {
   GetPostByUser,
   getFollowings,
   getFollowers,
+  putProfileImage
 } from "../../api/profile/profile";
+import {
+  getPostById,
+  postComment,
+  postLike,
+} from "../../api/ExploreApi/ExploreApi";
 import { useDispatch, useSelector } from "react-redux";
 
 import { destroyToken, getToken } from "../../utils/token";
@@ -104,9 +125,23 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 const Profile = () => {
   const [value, setValue] = useState("1");
 
+  const Byid = useSelector((state) => state.explore.ById);
+  let comments = useSelector((store) => store.explore.Comments);
+  const imgUrl = import.meta.env.VITE_APP_FILES_URL;
+
+   const handleBookmarkClick = () => {
+     setSaved((prevSaved) => !prevSaved);
+   };
+  
+  const [isSaved, setSaved] = useState(false);
+  
+
   const [imageEdit, setImageEdit] = useState("");
 
   const [search, setSearch] = useState("");
+
+  const [idx, setIdx] = useState();
+
 
   const [followerProfile, setFollowerProfile] = useState(false);
   const handleOpenFollowerProfile = () => setFollowerProfile(true);
@@ -123,12 +158,20 @@ const Profile = () => {
   const [openPost,setOpenPost] = useState(false)
 
   const [postImage, setPostImage] = useState();
+
+  const [imgPost, setImgPost] = useState();
   
-  const handleOpenPost = (elem) => {
+  const handleOpenPost = () => {
     setOpenPost(true);
-    setPostImage(elem);   
   };
   const handleClosePost = () => setOpenPost(false);
+  
+  const [isFollowing, setFollowing] = useState(false);
+
+  const handleButtonClick = () => {
+    // Toggle the value of isFollowing
+    setFollowing((prevFollowing) => !prevFollowing);
+  };
 
   const [followingProfile, setFollowingProfile] = useState(false);
   const handleOpenFollowingProfile = () => setFollowingProfile(true);
@@ -149,11 +192,31 @@ const Profile = () => {
   const postUser = useSelector((store) => store.profile.postUser);
   const followingsUser = useSelector((store) => store.profile.followingsUser);
   const followersUser = useSelector((store) => store.profile.followersUser);
+  
 
+  const handleClick = function () {
+    dispatch(
+      putProfileImage(
+      {
+        image:imageEdit
+      }
+    ))
+  }
+
+  const formatDate = (datePublished) => {
+    const date = new Date(datePublished);
+    const day = date.getDate();
+    const month = date.toLocaleString("default", { month: "long" });
+    const year = date.getFullYear();
+    return `${day} ${month} ${year}`;
+  };
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  const formattedDate = formatDate(Byid?.datePublished);
+
 
   function logOut() {
     navigate("/");
@@ -161,7 +224,7 @@ const Profile = () => {
   }
 
   console.log(userProfile.userName);
-  // console.log(postProfile)
+  console.log(postUser)
   console.log(followingsUser);
   console.log(userProfile.image);
 
@@ -178,7 +241,7 @@ const Profile = () => {
       <div className="flex justify-between items-center">
         <div className="w-[30%]">
           <img
-            onClick={()=>handleOpenEditImageProfile()}
+            onClick={() => handleOpenEditImageProfile()}
             className="w-[81%] rounded-full cursor-pointer  h-[27vh] object-cover"
             src={
               userProfile.image !== 0
@@ -191,7 +254,7 @@ const Profile = () => {
         <div className="w-[70%]">
           <div className="flex flex-wrap w-[98%]  items-center gap-[60px]">
             <div>
-              <h1 className="text-[22px] font-[700]">{userProfile.userName}</h1>
+              <h1 className="text-[22px] font-[700]">{userProfile?.userName}</h1>
             </div>
             <div className="flex items-center gap-[20px]  h-[50px] ">
               <NavLink to="/basic/profile/editProfile">
@@ -328,7 +391,7 @@ const Profile = () => {
               {postUser?.map((elem) => {
                 return (
                   <div
-                    onClick={() => handleOpenPost(elem)}
+                    onClick={() => { handleOpenPost(elem), setIdx(el.postId),dispatch(getPostById(elem.postId)  ) }}
                     className="w-[32.8%] mt-[10px] h-[35vh] cursor-pointer bg-[whitesmoke] rounded-lg   "
                   >
                     {elem.images.map((image, index) => (
@@ -362,7 +425,7 @@ const Profile = () => {
                 {postUser?.map((elem) => {
                   return elem.postFavourite ? (
                     <div
-                      onClick={() => handleOpenModalProfile(elem)}
+                      onClick={() => handleOpenPost()}
                       className="w-[32.6%] mt-[0px] h-[23vh] rounded-md"
                     >
                       {elem.images.map((image, index) => (
@@ -625,14 +688,262 @@ const Profile = () => {
                   <img className="w-[100%]" src={Logo} alt="" />
                 </div>
                 <div className="mt-[10px]">
-                  <input className="outline-none" onChange={(e)=>setImageEdit(e.target.value)} type="file" />
+                  <input
+                    className="outline-none"
+                    onChange={(e) => setImageEdit(e.target.value)}
+                    type="file"
+                  />
                 </div>
                 <div className=" h-[30vh] mt-[10px] rounded-md">
-                    <img className="rounded-md" src={imageEdit} alt="" />
+                  <img className="rounded-md" src={imageEdit} alt="" />
                 </div>
+                <button
+                  onClick={() => handleClick()}
+                  className="w-[150px] h-[50px] bg-[whitesmoke] rounded-xl"
+                >
+                  Submit
+                </button>
               </div>
             </Box>
           </Fade>
+        </Modal>
+
+        <Modal
+          open={openPost}
+          onClose={handleClosePost}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={stylePost}>
+            <div className="flex">
+              <div className="w-[600px] h-[600px] border-solid border-[1px]  border-gray-200 bg-black ">
+                {Byid?.images?.map((el) => {
+                  return (
+                    <img
+                      className="h-[100%] w-[100%] text-center object-cover"
+                      src={`${imgUrl}${el}`}
+                      alt=""
+                    />
+                  );
+                })}
+              </div>
+              <div>
+                <nav className="flex justify-between  h-[60px] w-[450px] border-solid border-[1px] border-gray-200 items-center px-[2%]">
+                  <div className="flex items-center gap-[5px]">
+                    <div>
+                      <img
+                        className="w-[40px] h-[40px]"
+                        src={
+                          length == 0
+                            ? "https://tse4.mm.bing.net/th?id=OIP.jixXH_Els1MXBRmKFdMQPAHaHa&pid=Api&P=0&h=220"
+                            : Byid?.images
+                        }
+                        alt=""
+                      />
+                    </div>
+                    <div className="flex flex-col gap-[1px]">
+                      <div className="flex items-center gap-[5px]">
+                        <h1 className="text-[15px] font-[600] text-[#262626] hover:opacity-50 cursor-pointer">
+                          {Byid?.title}
+                        </h1>
+                        <h1>•</h1>
+                        <h1
+                          onClick={handleButtonClick}
+                          className="text-[#0095f6] cursor-pointer text-[15px] hover:text-[#1f4158]"
+                        >
+                          {isFollowing ? "Unfollow" : "Follow"}
+                        </h1>
+                      </div>
+                      <div>
+                        <h1 className="text-[#000000] font-[200] text-[13px]">
+                          {/* {Byid?.content} */}
+                        </h1>
+                      </div>
+                    </div>
+                  </div>
+                  <MoreHorizIcon
+                    className="hover:opacity-50 cursor-pointer"
+                    onClick={() => handleClickOpenDialog()}
+                  />
+                </nav>
+                <div className="h-[380px] flex flex-col gap-[20px] overflow-auto p-[3%]">
+                  {Byid?.comments?.map((el) => {
+                    return (
+                      <div className="flex justify-between items-center">
+                        <div className="flex items-center gap-[10px]">
+                          <img
+                            className="w-[30px] h-[30px]"
+                            src={
+                              length == 0
+                                ? "https://tse4.mm.bing.net/th?id=OIP.jixXH_Els1MXBRmKFdMQPAHaHa&pid=Api&P=0&h=220"
+                                : Byid?.images
+                            }
+                            alt=""
+                          />
+                          <div>
+                            <div className="flex gap-[5px]">
+                              <h1 className="font-[600] text-[15px] hover:opacity-50">
+                                {Byid?.title}
+                              </h1>
+                              <h1 className="w-[200px] font-[300]">
+                                {el?.comment}
+                              </h1>
+                            </div>
+                            <div>
+                              <MoreHorizIcon
+                                sx={{ fontSize: "15px" }}
+                                className="hover:opacity-50 cursor-pointer"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div>
+                          {/* <FavoriteIcon
+                          color="error"
+                          sx={{ fontSize: "15px" }}
+                        ></FavoriteIcon> */}
+                          <FavoriteBorderIcon
+                            className="hover:opacity-50"
+                            sx={{ cursor: "pointer", fontSize: "15px" }}
+                          ></FavoriteBorderIcon>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <footer className="border-t-[1px]">
+                  <div className="flex mt-[10px] justify-between items-center">
+                    <div className="flex items-center pl-[16px] gap-[10px]">
+                      {Byid?.postLike ? (
+                        <FavoriteIcon
+                          className="hover:opacity-50"
+                          color="error"
+                          sx={{ cursor: "pointer" }}
+                          onClick={() => {
+                            dispatch(postLike(Byid?.postId));
+                          }}
+                        ></FavoriteIcon>
+                      ) : (
+                        <FavoriteBorderIcon
+                          className="hover:opacity-50"
+                          sx={{ cursor: "pointer" }}
+                          onClick={() => dispatch(postLike(Byid?.postId))}
+                        ></FavoriteBorderIcon>
+                      )}
+                      <svg
+                        className="hover:opacity-50 cursor-pointer"
+                        aria-label="Комментировать"
+                        class="x1lliihq x1n2onr6 x5n08af"
+                        fill="currentColor"
+                        height="24"
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width="24"
+                      >
+                        <title>Комментировать</title>
+                        <path
+                          d="M20.656 17.008a9.993 9.993 0 1 0-3.59 3.615L22 22Z"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                        ></path>
+                      </svg>
+                      <svg
+                        className="hover:opacity-50 cursor-pointer"
+                        aria-label="Поделиться публикацией"
+                        class="x1lliihq x1n2onr6 x5n08af"
+                        fill="currentColor"
+                        height="24"
+                        role="img"
+                        viewBox="0 0 24 24"
+                        width="24"
+                      >
+                        <title>Поделиться публикацией</title>
+                        <line
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          x1="22"
+                          x2="9.218"
+                          y1="3"
+                          y2="10.083"
+                        ></line>
+                        <polygon
+                          fill="none"
+                          points="11.698 20.334 22 3.001 2 3.001 9.218 10.084 11.698 20.334"
+                          stroke="currentColor"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                        ></polygon>
+                      </svg>
+                    </div>
+                    <div className="pr-[16px]">
+                      {/* {isSaved ? (
+                      <BookmarkIcon
+                        className="hover:opacity-50"
+                        onClick={() => handleBookmarkClick()}
+                        style={{
+                          cursor: "pointer",
+                          color: "black",
+                        }}
+                      />
+                    ) : (
+                      <BookmarkBorderIcon
+                        className="hover:opacity-50"
+                        style={{
+                          cursor: "pointer",
+                        }}
+                      />
+                    )} */}
+                      <BookmarkIcon
+                        onClick={handleBookmarkClick}
+                        style={{
+                          cursor: "pointer",
+                          color: isSaved ? "black" : "blue",
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <div className="py-[10px]">
+                    <h1 className="pl-[16px] text-[#000000] font-[700] text-[17px]">
+                      {Byid?.postLikeCount} <span>likes</span>
+                    </h1>
+                    <h1 className="pl-[16px] text-[#737373] font-[300] text-[12px]">
+                      {formattedDate}
+                    </h1>
+                    <p></p>
+                  </div>
+                  <div className="flex gap-2 py-[10px] items-center border-t pl-[16px]">
+                    <SentimentSatisfiedAltIcon className="hover:opacity-50" />
+                    <input
+                      onChange={(e) => dispatch(setComment(e.target.value))}
+                      className="w-[330px] outline-none h-[40px]"
+                      type="text"
+                      value={comments}
+                      placeholder="Add Comments..."
+                    />
+                    <button
+                      onClick={() => {
+                        dispatch(
+                          postComment({
+                            comment: comments,
+                            postId: Byid?.postId,
+                          })
+                        );
+                        dispatch(setComment(""));
+                      }}
+                      className="text-blue-600 text-[17px] font-[700]"
+                    >
+                      Post
+                    </button>
+                  </div>
+                </footer>
+              </div>
+            </div>
+          </Box>
         </Modal>
       </div>
     </div>
