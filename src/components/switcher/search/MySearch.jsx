@@ -32,6 +32,7 @@ const style = {
 
 const MySearch = ({ state }) => {
   const data = useSelector((state) => state.searchUsers.data);
+  console.log(data);
   const dataHistory = useSelector((state) => state.searchUsers.dataHistory);
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
@@ -114,6 +115,7 @@ const MySearch = ({ state }) => {
                           </h1>
                           <h1 className="text-[14px] text-gray-500 mt-[-5px]">
                             {e.users.fullName}
+                            {e.id}
                           </h1>
                         </div>
                       </div>
