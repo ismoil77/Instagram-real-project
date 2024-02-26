@@ -30,6 +30,10 @@ import { Button } from '@mui/material';
 import HistoryHome from '../../components/historyHome/historyHome';
 import ReactPlayer from 'react-player';
 import { falseTrueModal } from '../../reducers/Home/Home';
+import { getToken } from '../../utils/token';
+import { getFollowers } from '../../api/profile/profile';
+import { unFollowingByID } from '../../api/followUnfollow/followUnfollow';
+import { Link } from 'react-router-dom';
 const Home = () => {
   const [allUserOpen,setAllUserOpen]=useState(false)
   const [statet,setStatet]=useState(false)
@@ -41,29 +45,46 @@ const Home = () => {
  const data = useSelector((store)=>store.homeJs.data)
  const dataUsers = useSelector((store)=>store.homeJs.dataUsers)
  const dataHistory = useSelector((store)=>store.homeJs.dataHistory)
+ ////////
+ const followersUser = useSelector((store) => store.profile.followersUser);
+ const [foled,setFoled]=useState(false)
+ ////////
  useEffect(()=>{
   // dispatch(getUserAbout())
 dispatch(getTodosByPost12())
 dispatch(getAllUser())
 dispatch(getHistory())
+dispatch(getFollowers(getToken().sid));
  },[])
- 
-
+//  console.log(followersUser);
+function followOpr(id){
+  console.log(id);
+for(let i = 0;i<followersUser.length;i++){
+  if(followersUser[i].userShortInfo.userId==id){
+    console.log(followersUser[i].id);
+    dispatch(unFollowingByID(followersUser[i].id))
+  }
+}
+}
+///////////
   return (
     <>
      <HistoryHome state1={statet} />
+   
     <div className="ml-[100px] flex ">
       {/* history and posts */}
      <div className='w-[60%] '>
 
       {/* /////history */}
-      <div className="ml-[-50px] flex gap-3 mt-[-50px] " onClick={()=>{dispatch(falseTrueModal());console.log(11);}}>
+      <div className="ml-[-50px] flex gap-3 mt-[-50px] " >
       <Swiper navigation={true} slidesPerView={7} height={"100px"} modules={[Navigation]} className="mySwiper">
       {
           dataHistory?.map((elem)=>{
             return(
               <>
-                <SwiperSlide >  
+                <SwiperSlide onClick={()=>{
+                  dispatch(falseTrueModal())
+                }}>  
               <div className="flex items-center justify-between gap-3">
         <div className="flex flex-col items-center gap-3">
           <div className="flex flex-col ">
@@ -100,6 +121,7 @@ dispatch(getHistory())
     
 {
       data?.map((el,index)=>{
+        // console.log(data);
         // console.log(el.images[0].length);
         // console.log(el.images[0].slice(el.images[0].length-3));
         // el.images[0].slice(el.images[0].length-3)
@@ -111,13 +133,15 @@ dispatch(getHistory())
   <div className="flex items-center justify-between ">
     <div className="flex items-center gap-3">
     <div className="flex flex-col ">
-            <div className="w-[60px] h-[60px] rounded-[50%] border-[3.5px] border-[#DE0046] flex items-center justify-center bg-gradient-to-r from-[#DE0046] to-[#F7A34B] ">
+            <div className="w-[60px] h-[60px] rounded-[50%] border-[3.5px] border-[#DE0046] flex items-center justify-center bg-gradient-to-r from-[#DE0046] to-[#F7A34B] " onClick={()=>{
+                  dispatch(falseTrueModal())
+                }}>
           <img className='w-[53px] h-[53px] border-[4px] border-white rounded-[50%] object-cover' src={el.images[0].slice(el.images[0].length-3)=="mp4"||el.images.length==0?notFoundUser:`${urlImg}/${el.images[0]}`} alt="" />
             </div>
            
         </div>
         <div className="flex flex-col gap-[5px]">
-          <p className='text-[16px] font-[600]'>{el.title!=null?el.title:"Not Have Name"}</p>
+        <Link to={`users/${el.userId}`}> <p className='text-[16px] font-[600]'>{el.title!=null?el.title:"Not Have Name"}</p></Link>
           <p className='font-[500] text-[#64748B] text-[16px]'>Profile: {el.datePublished.slice(0,10)} {el.datePublished.slice(11,19)}</p>
           
         </div>
@@ -278,7 +302,9 @@ setViewCom(true)
               <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <div className="flex flex-col ">
-            <div className="w-[60px] h-[60px] rounded-[50%] border-[3.5px] border-[#DE0046] flex items-center justify-center bg-gradient-to-r from-[#DE0046] to-[#F7A34B] ">
+            <div className="w-[60px] h-[60px] rounded-[50%] border-[3.5px] border-[#DE0046] flex items-center justify-center bg-gradient-to-r from-[#DE0046] to-[#F7A34B] " onClick={()=>{
+                  dispatch(falseTrueModal())
+                }}>
           <img className='w-[53px] h-[53px] border-[4px] border-white rounded-[50%] object-cover' src={elem.avatar!=""?`${urlImg}/${elem.avatar}`:notFoundUser} alt="" />
             </div>
            
@@ -290,7 +316,12 @@ setViewCom(true)
         </div>
     
         <div className="">
-          <button style={elem.subscriptions==true?{color:'grey'}:null} className='text-[#3B82F6] text-[20px]' onClick={()=>{dispatch(getFollow(elem.id));dispatch(getAllUser())}}>{elem.subscriptions?"Unfollow":"Follow"}</button>
+          {
+            elem.subscriptions?<button className=' text-[grey] text-[20px]' onClick={()=>{followOpr(elem.id);dispatch(getAllUser())}}>UnFollow</button>:<button style={elem.subscriptions==true?{color:'grey',display:"none"}:{display:'block'}} className='text-[#3B82F6] text-[20px]' onClick={()=>{dispatch(getFollow(elem.id));dispatch(getAllUser())}}>{elem.subscriptions?"Unfollow":"Follow"}</button>
+
+
+          }
+       
         </div>
     </div>
               </>
