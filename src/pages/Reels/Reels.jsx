@@ -14,6 +14,7 @@ import playicon from "../../assets/images/palyI.png";
 import { getToken } from '../../utils/token';
 import { getFollowers } from '../../api/profile/profile';
 import { unFollowingByID } from '../../api/followUnfollow/followUnfollow';
+import {  getAllUser, getFollow,} from '../../api/home/home'
 /////
 import volume_up from "../../assets/images/volume_up.svg";
 import Vector2 from "../../assets/images/Vector (2).png";
