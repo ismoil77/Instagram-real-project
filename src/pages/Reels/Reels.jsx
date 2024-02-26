@@ -8,15 +8,13 @@ import PlayCircleFilledWhiteOutlinedIcon from "@mui/icons-material/PlayCircleFil
 import MarkChatUnreadOutlinedIcon from "@mui/icons-material/MarkChatUnreadOutlined";
 import FavoriteSharpIcon from "@mui/icons-material/FavoriteSharp";
 import PlayArrowSharpIcon from "@mui/icons-material/PlayArrowSharp";
-// import getFollow from "../../api/home/home";
-
-
 
 import playicon from "../../assets/images/palyI.png";
-
-import heart from "/src/assets/imgHome/8666647_heart_icon.png";
-import heartActive from "/src/assets/imgHome/heartAcive.png";
-
+////
+import { getToken } from '../../utils/token';
+import { getFollowers } from '../../api/profile/profile';
+import { unFollowingByID } from '../../api/followUnfollow/followUnfollow';
+/////
 import volume_up from "../../assets/images/volume_up.svg";
 import Vector2 from "../../assets/images/Vector (2).png";
 import Profile from "../../assets/images/Profile.png";
@@ -43,37 +41,23 @@ import {
   getComment,
   getLike,
   postComment,
-  // postFollow,
+  postSave,
   // getFollowings,
   // getFollowers,
 } from "../../api/reels/Reels";
-
 // import { Pause } from "@mui/icons-material";
 import { setComment } from "../../reducers/reels/Reelse";
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
-import { getToken } from "../../utils/token";
 
-import { getFollowers } from "../../api/profile/profile";
-// import { unFollowingByID } from '../../api/followUnfollow/followUnfollow';
 const Reels = () => {
+  ////
   const followersUser = useSelector((store) => store.profile.followersUser);
-  const [foled, setFoled] = useState(false);
-
-  function followOpr(id) {
-    console.log(id);
-    for (let i = 0; i < followersUser.length; i++) {
-      if (followersUser[i].userShortInfo.userId == id) {
-        console.log(followersUser[i].id);
-        dispatch(unFollowingByID(followersUser[i].id));
-      }
-    }
-  }
-
-  ////////
-
+  const [foled,setFoled]=useState(false)
+  ////
   const [showComints, satSearchComints] = useState(false);
   const [showShare, satSearchShare] = useState(false);
+  const [search, setSearch] = useState("");
   const [showPaly, setshowPaly] = useState(false);
 
   const imgUrl = import.meta.env.VITE_APP_FILES_URL;
@@ -85,65 +69,72 @@ const Reels = () => {
 
   const Byid = useSelector((state) => state.reels.Byid);
   const followingsUser = useSelector((store) => store.profile.followingsUser);
-
+////
   useEffect(() => {
     dispatch(getComment());
     dispatch(getLike());
-    // dispatch(getAllUser());
-    dispatch(getFollowers(getToken().sid));
   }, []);
+  useEffect(()=>{
+    // dispatch(getUserAbout())
+  
+  dispatch(getFollowers(getToken().sid));
+   },[])
+
+   function followOpr(id){
+    console.log(id);
+  for(let i = 0;i<followersUser.length;i++){
+    if(followersUser[i].userShortInfo.userId==id){
+      console.log(followersUser[i].id);
+      dispatch(unFollowingByID(followersUser[i].id))
+    }
+  }
+  }
+/////
 
   return (
     <div className="">
-      {/* <input
-                    onChange={(e) => setSearch(e.target.value)}
-                    value={search}
-                    placeholder="search..."
-                    className="w-[100%] text-[gray] text-[20px] bg-[whitesmoke] h-[50px] rounded-xl outline-none pl-[10px]"
-                    type="search"
-                  /> */}
-      {/* <div>
-                    {followingsUser
-                      .filter((e) => {
-                        return e.userShortInfo.userName
-                          .toLowerCase()
-                          .trim()
-                          .includes(search);
-                      })
-                      .map((e) => {
-                        console.log(e);
-                        return (
-                          <div className="flex p-[5px] rounded-xl mt-[5px] justify-between items-center bg-[whitesmoke]">
-                            <div className="flex p-[5px] gap-[10px] items-center">
-                              <img
-                                className="w-[45px] h-[45px] rounded-full"
-                                src={
-                                  e.userShortInfo.userPhoto.length !== 0
-                                    ? `${import.meta.env.VITE_APP_FILES_URL}/${
-                                        e.userShortInfo.userPhoto
-                                      }`
-                                    : "https://tse4.mm.bing.net/th?id=OIP.jixXH_Els1MXBRmKFdMQPAHaHa&pid=Api&P=0&h=220"
-                                }
-                                alt=""
-                              />
-                              <div>
-                                <h1 className="font-[600] text-[18px]">
-                                  {e.userShortInfo.userName}
-                                </h1>
-                                <h1 className="font-[500] text-[16px] text-[#4a4848]">
-                                  {e.userShortInfo.fullname}
-                                </h1>
-                              </div>
-                            </div>
-                            <div className="ml-[0px] mr-[10px]">
-                              <button className="text-[18px] hover:bg-[#00d9ff] hover:text-[white] p-[5px] rounded-lg hover:duration-500 text-[blue]">
-                                Follow
-                              </button>
-                            </div>
-                          </div>
-                        );
-                      })}
-                  </div> */}
+      <div>
+        {followingsUser
+          .filter((e) => {
+            return e.userShortInfo.userName
+              .toLowerCase()
+              .trim()
+              .includes(search);
+          })
+          .map((e) => {
+            console.log(e);
+            return (
+              <div className="flex p-[5px] rounded-xl mt-[5px] justify-between items-center bg-[whitesmoke]">
+                <div className="flex p-[5px] gap-[10px] items-center">
+                  <img
+                    className="w-[45px] h-[45px] rounded-full"
+                    src={
+                      e.userShortInfo.userPhoto.length !== 0
+                        ? `${import.meta.env.VITE_APP_FILES_URL}/${
+                            e.userShortInfo.userPhoto
+                          }`
+                        : "https://tse4.mm.bing.net/th?id=OIP.jixXH_Els1MXBRmKFdMQPAHaHa&pid=Api&P=0&h=220"
+                    }
+                    alt=""
+                  />
+                  <div>
+                    <h1 className="font-[600] text-[18px]">
+                      {e.userShortInfo.userName}
+                    </h1>
+                    <h1 className="font-[500] text-[16px] text-[#4a4848]">
+                      {e.userShortInfo.fullname}
+                    </h1>
+                  </div>
+                </div>
+                <div className="ml-[0px] mr-[10px]">
+                  <button className="text-[18px] hover:bg-[#00d9ff] hover:text-[white] p-[5px] rounded-lg hover:duration-500 text-[blue]">
+                    Follow
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+      </div>
       <div className="  w-full h-[100vh] flex  items-center    justify-center ">
         <div className="h-[90%]  w-[90%]    flex justify-end  ">
           <div className="h-full w-[50%]  relative  shadow-2xl  rounded-[10px] ">
@@ -193,14 +184,17 @@ const Reels = () => {
                         </p>
                         <p className="font-bold texr-[30px ]  bg-white  h-2 w-2  rounded-[50%] pb-2"></p>
 
-                        <p
-                          // onClick={() => {
-                          //   dispatch(postFollow(el.userId)), console.log(el);
-                          // }}
-                          className="cursor-pointer border-[2px] text-white border-[white] rounded-[12px] text-[16px] px-3 py-1"
-                        >
-                          Follow
-                        </p>
+                        <div className="">
+          {
+            el.subscriptions?<button className=' text-[grey] text-[20px]'
+             onClick={()=>{followOpr(el.id);dispatch(getAllUser())}}>
+              UnFollow</button>:<button style={el.subscriptions==true?{color:'grey',display:"none"}:{display:'block'}}
+               className='text-[#3B82F6] text-[20px]' onClick={()=>{dispatch(getFollow(el.id));dispatch(getAllUser())}}>{el.subscriptions?"Unfollow":"Follow"}</button>
+
+
+          }
+       
+        </div>
                       </div>
 
                       <video
@@ -225,7 +219,7 @@ const Reels = () => {
                       <div className=" h-[100%]   pt-[100px]  bg-[black]  absolute  right-[-55px] z-10  w-[70px]    ">
                         <div className="h-[30px] w-[40%] mt-20    ml-2  ">
                           {/* start like  button  */}
-                          {/* <button className="w-[30px]">
+                          <button className="w-[30px]">
                             {el.postLike ? (
                               <Favorite
                                 style={{ color: "red" }}
@@ -238,35 +232,7 @@ const Reels = () => {
                                 onClick={() => dispatch(getLike(el.postId))}
                               ></FavoriteBorder>
                             )}
-                          </button> */}
-                          <div className="">
-                            {el.subscriptions ? (
-                              <button
-                                className=" text-[grey] text-[20px]"
-                                onClick={() => {
-                                  followOpr(el.id);
-                                  dispatch(getAllUser());
-                                }}
-                              >
-                                UnFollow
-                              </button>
-                            ) : (
-                              <button
-                                style={
-                                  el.subscriptions == true
-                                    ? { color: "grey", display: "none" }
-                                    : { display: "block" }
-                                }
-                                className="text-[#3B82F6] text-[20px]"
-                                onClick={() => {
-                                  dispatch(getFollow(el.id));
-                                  dispatch(getAllUser());
-                                }}
-                              >
-                                {el.subscriptions ? "Unfollow" : "Follow"}
-                              </button>
-                            )}
-                          </div>
+                          </button>
                           {/* end of like button */}
                         </div>
 
