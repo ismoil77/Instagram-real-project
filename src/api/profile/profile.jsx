@@ -26,6 +26,7 @@ export const GetPostByUser = createAsyncThunk(
     }
   }
 );
+
 export const getFollowings = createAsyncThunk(
   "profile/getFollowings",
   async function (id) {
@@ -69,17 +70,17 @@ export const putProfile = createAsyncThunk(
     }
   }
 );
- export const putProfileImage = createAsyncThunk(
+
+export const putProfileImage = createAsyncThunk(
    "profile/putProfileImage",
    async function (image) {
-    
+     let formData = new FormData();
+     formData.append("image", image);
      try {
        let { data } = await axiosRequest.put(
          `UserProfile/update-profile-photo`,
-         image
+         formData
        );
-       console.log(data);
-       return data.data;
      } catch (error) {
        console.log(error);
      }

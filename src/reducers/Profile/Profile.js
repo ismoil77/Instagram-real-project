@@ -32,6 +32,7 @@ import { createSlice } from "@reduxjs/toolkit";
          state.followersUser = action.payload;
          state.isLoading = false;
      });
+     
     //  builder.addCase(putProfile.fulfilled, (state, action) => {
     //    console.log(action.payload);
     //  });
