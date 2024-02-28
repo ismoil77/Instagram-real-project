@@ -30,8 +30,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: "100%",
-  height: "100%",
-
+  height: "110%",
   bgcolor: "#282222",
   border: "2px solid #000",
   boxShadow: 24,
@@ -54,7 +53,7 @@ const HistoryHome = ({ state1 }) => {
   const dataClose = useSelector((store) => store.homeJs.modalOpenClose);
 
   return (
-    <div className="bg-white mx-auto ">
+    <div className="bg-white mx-auto">
     
       <Modal
         open={dataClose}
@@ -87,7 +86,7 @@ const HistoryHome = ({ state1 }) => {
               }}
               navigation={true}
               modules={[Keyboard, Navigation]}
-              className="mySwiper h-[650px] w-[450px] mt-[-20px] mb-[100px]"
+              className="mySwiper h-[600px] pb-[50px] w-[450px] mt-[-70px] mb-[100px]"
             >
               {dataHistory
                 ?.filter((elementt) => {
@@ -101,7 +100,7 @@ const HistoryHome = ({ state1 }) => {
                     <>
                       {/* {console.log(eleme)} */}
 
-                      <SwiperSlide className="h-[600px] bg-[black] text-[white] rounded-[10px] mb-[100px]">
+                      <SwiperSlide className="h-[580px] bg-[black] text-[white]  rounded-[10px] mb-[100px]">
                         <div className="w-[100%]" key={eleme.userId}>
                           <div className="w-[100%] absolute top-0 flex items-center gap-4 border-b-2 px-[10px] py-[10px]">
                             <div className="h-[80px] w-[80px]  ">
@@ -183,12 +182,12 @@ const HistoryHome = ({ state1 }) => {
                                       </>
                                     );
                                   })}
-                                  <div className="w-[80%] left-[10%] mt-[0px] absolute z-[9999] flex items-center gap-6">
+                                  <div className="w-[80%]  left-[10%] mt-[-12%] absolute z-[9999] flex items-center gap-6">
                                     <input
                                       className="w-[80%] border-[2px] h-[50px] border-[white] rounded-[50px] bg-inherit px-[10px] text-[15px]"
                                       placeholder={`Ответьте ${
                                         eleme
-                                          ? eleme.fullname.slice(0, 5) + "..."
+                                          ? eleme.fullname.slice(0, 9) + "..."
                                           : eleme.fullname == ""
                                           ? `User${Math.floor(
                                               Math.random() * 100 + 1

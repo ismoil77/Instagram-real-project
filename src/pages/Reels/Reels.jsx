@@ -94,7 +94,7 @@ const Reels = () => {
 
   return (
     <div className="">
-      <div>
+      {/* <div>
         {followingsUser
           .filter((e) => {
             return e.userShortInfo.userName
@@ -106,7 +106,7 @@ const Reels = () => {
             console.log(e);
             return (
               <div className="flex p-[5px] rounded-xl mt-[5px] justify-between items-center bg-[whitesmoke]">
-                <div className="flex p-[5px] gap-[10px] items-center">
+                <div className="flex p-[5px] gap-[5px] items-center">
                   <img
                     className="w-[45px] h-[45px] rounded-full"
                     src={
@@ -135,9 +135,9 @@ const Reels = () => {
               </div>
             );
           })}
-      </div>
-      <div className="  w-full h-[100vh] flex  items-center    justify-center ">
-        <div className="h-[90%]  w-[90%]    flex justify-end  ">
+      </div> */}
+      <div className="  w-full h-[100vh] flex   items-center    justify-center ">
+        <div className="h-[100%]  w-[90%]    flex justify-end  ">
           <div className="h-full w-[50%]  relative  shadow-2xl  rounded-[10px] ">
             <Swiper
               direction={"vertical"}
@@ -175,7 +175,7 @@ const Reels = () => {
                     {/* end of    The Vaeis up   icon */}
 
                     {/*    start  video */}
-                    <div className="flex   pl-6   relative left-[-30px] w-full h-full  ">
+                    <div className="flex   pl-6   relative left-[-30px] w-[100%] h-full  ">
                       <div className="absolute  z-50 bottom-20 h-10 w-[80%]  flex items-center  gap-3 pl-4   ">
                         <div className="h-[35px]  w-[35px] bg-red-200  rounded-[50%] ">
                           <img className=" h-full w-full" src={Profile} />
@@ -183,7 +183,7 @@ const Reels = () => {
                         <p className="text-[20px] text-white font-bold">
                           munir
                         </p>
-                        <p className="font-bold texr-[30px ]  bg-white  h-2 w-2  rounded-[50%] pb-2"></p>
+                        <p className="font-bold texr-[30px]  bg-white  h-2 w-2  rounded-[50%] pb-1"></p>
 
                         <div className="">
           {
@@ -283,7 +283,7 @@ const Reels = () => {
 
                         <div className="h-[40px] w-[40px] relative   ">
                           <img
-                            className="text-[30px] h-[30px] w-[20px] rounded-[50%]  absolute top-[-3px] font-bold  "
+                            className="text-[30px] h-[30px] w-[20px] rounded-[50%]  absolute top-[-20px] font-bold  "
                             src={
                               length == 0
                                 ? "https://tse4.mm.bing.net/th?id=OIP.jixXH_Els1MXBRmKFdMQPAHaHa&pid=Api&P=0&h=220"

@@ -6,8 +6,10 @@ import ArticleIcon from "@mui/icons-material/Article";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import React, { useEffect, useState } from "react";
+import imageee from "../../assets/images/polzovatel.jpg";
 
 import BookmarkIcon from "@mui/icons-material/Bookmark";
+
 
 
 import Logo from "../../assets/icons/logo.svg"
@@ -37,6 +39,17 @@ const style = {
   boxShadow: 24,
   borderRadius: "10px",
   outline:"none",
+  p: 4,
+};
+const style1 = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
   p: 4,
 };
 const styleModal = {
@@ -122,6 +135,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { destroyToken, getToken } from "../../utils/token";
 import { Link, NavLink, useNavigate } from "react-router-dom";
+import { axiosRequest } from "../../utils/axiosRequest";
 const Profile = () => {
   const [value, setValue] = useState("1");
 
@@ -135,12 +149,17 @@ const Profile = () => {
   
   const [isSaved, setSaved] = useState(false);
   
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
+  
   const [imageEdit, setImageEdit] = useState("");
-
+  const [modal, setModal] = useState(false);
   const [search, setSearch] = useState("");
 
   const [idx, setIdx] = useState();
+  const [idx1, setIdx1] = useState();
 
 
   const [followerProfile, setFollowerProfile] = useState(false);
@@ -203,6 +222,15 @@ const Profile = () => {
     ))
   }
 
+  async function deletePhoto(){
+    try {
+      let {data} = await axiosRequest.delete(`Post/delete-post?id=${idx1}`)
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   const formatDate = (datePublished) => {
     const date = new Date(datePublished);
     const day = date.getDate();
@@ -223,10 +251,10 @@ const Profile = () => {
     destroyToken("access_token");
   }
 
-  console.log(userProfile.userName);
-  console.log(postUser)
-  console.log(followingsUser);
-  console.log(userProfile.image);
+  // console.log(userProfile.userName);
+  // console.log(postUser)
+  // console.log(followingsUser);
+  // console.log(userProfile.image);
 
   console.log(getToken());
   useEffect(() => {
@@ -237,10 +265,39 @@ const Profile = () => {
   }, [dispatch],getProfileById());
 
   return (
+    <div className="">
+ <div>
+      {/* <Button onClick={handleOpen}>Open modal</Button> */}
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style1} style={{borderRadius:"10px",border:"none"}}>
+          <h1 className="text-[23px] ml-[17%] mb-[4%] font-[600]">
+            Delete Post Forever ?
+          </h1>
+          <div className="pt-[5px] border-t-2">
+          <Button id="modal-modal-title" onClick={()=> {deletePhoto(),handleClose(),handleClosePost()}}  color="error" sx={{marginLeft:"90px"}} component="h2">
+            Delete Forever
+          </Button>
+          </div>
+          <div className="pt-[5px] border-t-2 mt-[4%]">
+          <Button id="modal-modal-description" onClick={handleClose}  sx={{ml:15 }}>
+           Not now
+          </Button>
+          </div>
+        </Box>
+      </Modal>
+    </div>
+
+
+
     <div className="p-[60px] pr-[200px] ">
       <div className="flex justify-between items-center">
         <div className="w-[30%]">
-          <img
+          {/* <img
             onClick={() => handleOpenEditImageProfile()}
             className="w-[81%] rounded-full cursor-pointer  h-[27vh] object-cover"
             src={
@@ -249,7 +306,23 @@ const Profile = () => {
                 : "https://tse4.mm.bing.net/th?id=OIP.jixXH_Els1MXBRmKFdMQPAHaHa&pid=Api&P=0&h=220"
             }
             alt=""
-          />
+          /> */}
+           {userProfile?.image == null ||
+                    userProfile.image == "" ? (
+                      <img
+                      onClick={() => handleOpenEditImageProfile()}
+                         className="w-[80%] rounded-full cursor-pointer  h-[30vh] object-cover"
+                        src={imageee}
+                        alt={"profile"}
+                      />
+                    ) : (
+                      <img
+                      onClick={() => handleOpenEditImageProfile()}
+                         className="w-[80%] rounded-full cursor-pointer  h-[30vh] object-cover"
+                        src={`${import.meta.env.VITE_APP_FILES_URL}/${userProfile.image}`}
+                        alt={"profile"}
+                      />
+                    )}
         </div>
         <div className="w-[70%]">
           <div className="flex flex-wrap w-[98%]  items-center gap-[60px]">
@@ -280,7 +353,7 @@ const Profile = () => {
             <div className="flex w-[32%]  hover:bg-[whitesmoke] hover:duration-700 cursor-pointer  text-center p-[5px] rounded-xl">
               <h1 className="text-[20px] text-[gray] text-center">
                 <span className="text-[20px] font-[700] text-[black] pr-[5px] pl-[10px]">
-                  {userProfile.postCount}
+                  {userProfile?.postCount}
                 </span>
                 posts
               </h1>
@@ -391,13 +464,13 @@ const Profile = () => {
               {postUser?.map((elem) => {
                 return (
                   <div
-                    onClick={() => { handleOpenPost(elem), setIdx(el.postId),dispatch(getPostById(elem.postId)  ) }}
+                    onClick={() => { handleOpenPost(elem), setIdx1(elem.postId),console.log(elem.postId),dispatch(getPostById(elem.postId)  ) }}
                     className="w-[32.8%] mt-[10px] h-[35vh] cursor-pointer bg-[whitesmoke] rounded-lg   "
                   >
                     {elem.images.map((image, index) => (
                       <img
                         className="w-[100%] h-[100%] rounded-md object-cover"
-                        src={`${import.meta.env.VITE_APP_FILES_URL}/${
+                        src={`${import.meta.env.VITE_APP_FILES_URL}/${  
                           elem.images[0]
                         }`}
                         alt=""
@@ -727,7 +800,7 @@ const Profile = () => {
                   );
                 })}
               </div>
-              <div>
+              <div className=" ">
                 <nav className="flex justify-between  h-[60px] w-[450px] border-solid border-[1px] border-gray-200 items-center px-[2%]">
                   <div className="flex items-center gap-[5px]">
                     <div>
@@ -763,13 +836,16 @@ const Profile = () => {
                   </div>
                   <MoreHorizIcon
                     className="hover:opacity-50 cursor-pointer"
-                    onClick={() => handleClickOpenDialog()}
+                    onClick={() => { setModal(true),handleOpen()}}
                   />
                 </nav>
                 <div className="h-[380px] flex flex-col gap-[20px] overflow-auto p-[3%]">
                   {Byid?.comments?.map((el) => {
+                    console.log(Byid);
                     return (
                       <div className="flex justify-between items-center">
+                         
+                      
                         <div className="flex items-center gap-[10px]">
                           <img
                             className="w-[30px] h-[30px]"
@@ -791,6 +867,7 @@ const Profile = () => {
                             </div>
                             <div>
                               <MoreHorizIcon
+                             
                                 sx={{ fontSize: "15px" }}
                                 className="hover:opacity-50 cursor-pointer"
                               />
@@ -816,14 +893,15 @@ const Profile = () => {
                   <div className="flex mt-[10px] justify-between items-center">
                     <div className="flex items-center pl-[16px] gap-[10px]">
                       {Byid?.postLike ? (
-                        <FavoriteIcon
-                          className="hover:opacity-50"
-                          color="error"
-                          sx={{ cursor: "pointer" }}
-                          onClick={() => {
-                            dispatch(postLike(Byid?.postId));
-                          }}
-                        ></FavoriteIcon>
+                        // <FavoriteIcon
+                        //   className="hover:opacity-50"
+                        //   color="error"
+                        //   sx={{ cursor: "pointer" }}
+                        //   onClick={() => {
+                        //     dispatch(postLike(Byid?.postId));
+                        //   }}
+                        // ></FavoriteIcon>
+                        <div className=""></div>
                       ) : (
                         <FavoriteBorderIcon
                           className="hover:opacity-50"
@@ -945,8 +1023,17 @@ const Profile = () => {
             </div>
           </Box>
         </Modal>
-      </div>
+      
     </div>
+    </div>
+       {/* {modal?
+      <div className=" absolute top-[50vh] w-[20%] h-[100px]  bg-[gray]">
+  <button className="text-[red]" onClick={()=> {deletePhoto(),setModal(false)}}>Delete</button>
+      </div>:null
+    } */}
+    </div>
+
+   
   );
 };
 export default Profile;
